@@ -3,51 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
 <title>Voyages — Famille Bonato</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="stylesheet" href="framework/style.css"/>
+<style>
+  .trip-card { position: relative; }
+  .trip-card-content { display: flex; align-items: center; gap: 16px; flex: 1; min-width: 0; }
+  .a2hs-btn {
+    flex: 0 0 auto; width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--paper); border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 1.1rem; cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+    text-decoration: none;
+  }
+  .a2hs-btn:active { transform: scale(0.9); background: var(--border); }
+
+  /* Modal overlay */
+  .a2hs-modal {
+    display: none; position: fixed; inset: 0; z-index: 9999;
+    background: rgba(0,0,0,0.55); backdrop-filter: blur(4px);
+    align-items: flex-end; justify-content: center;
+  }
+  .a2hs-modal.open { display: flex; }
+  .a2hs-sheet {
+    background: var(--white); border-radius: 20px 20px 0 0;
+    padding: 28px 24px 40px; width: 100%; max-width: 420px;
+    animation: slideUp 0.3s ease-out;
+  }
+  @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .a2hs-sheet h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 20px; text-align: center; }
+  .a2hs-step {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 12px 0; border-bottom: 1px solid var(--border);
+  }
+  .a2hs-step:last-child { border-bottom: none; }
+  .a2hs-num {
+    flex: 0 0 28px; height: 28px; border-radius: 50%;
+    background: var(--ink); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 800;
+  }
+  .a2hs-step p { font-size: 0.85rem; color: var(--ink-2); line-height: 1.5; padding-top: 3px; }
+  .a2hs-step .ios-icon {
+    display: inline-block; width: 22px; height: 22px; vertical-align: middle;
+    background: var(--paper); border: 1px solid var(--border); border-radius: 5px;
+    text-align: center; line-height: 22px; font-size: 14px;
+  }
+  .a2hs-close {
+    display: block; width: 100%; margin-top: 16px; padding: 14px;
+    background: var(--ink); color: white; border: none; border-radius: 12px;
+    font-size: 0.9rem; font-weight: 700; cursor: pointer;
+  }
+  .a2hs-close:active { opacity: 0.8; }
+</style>
 </head>
 <body>
 <div class="landing">
   <h1>Nos Voyages</h1>
   <p class="landing-sub">Famille Bonato — Guides de voyage</p>
   <div class="trip-grid">
-    <a href="trips/londres-2026/index.html" class="trip-card">
-      <span class="trip-flag">🇬🇧</span>
-      <div>
-        <h2>Londres 2026</h2>
-        <p>27–30 Avril · 4 jours</p>
-      </div>
-    </a>
-    <a href="trips/stockholm-2026-budget/index.html" class="trip-card">
-      <span class="trip-flag">🇸🇪</span>
-      <div>
-        <h2>Stockholm — Version Maline</h2>
-        <p>29 Juil – 3 Août · 6 jours · ~740 €</p>
-      </div>
-    </a>
-    <a href="trips/stockholm-2026-expensive/index.html" class="trip-card">
-      <span class="trip-flag">🇸🇪</span>
-      <div>
-        <h2>Stockholm — Version Expensive</h2>
-        <p>29 Juil – 3 Août · 6 jours</p>
-      </div>
-    </a>
-    <a href="trips/archipel-2026-varie/index.html" class="trip-card">
-      <span class="trip-flag">🇸🇪</span>
-      <div>
-        <h2>Suède Intérieure — Variée</h2>
-        <p>3–8 Août · 6 jours · Sigtuna</p>
-      </div>
-    </a>
-    <a href="trips/archipel-2026-nature/index.html" class="trip-card">
-      <span class="trip-flag">🇸🇪</span>
-      <div>
-        <h2>Archipel — Nature</h2>
-        <p>3–8 Août · 6 jours · Vaxholm</p>
-      </div>
-    </a>
+    <div class="trip-card">
+      <a href="trips/londres-2026/index.html" class="trip-card-content">
+        <span class="trip-flag">🇬🇧</span>
+        <div>
+          <h2>Londres 2026</h2>
+          <p>27–30 Avril · 4 jours</p>
+        </div>
+      </a>
+      <button class="a2hs-btn" onclick="event.stopPropagation();showA2HS('Londres 2026','trips/londres-2026/index.html')">📲</button>
+    </div>
+    <div class="trip-card">
+      <a href="trips/stockholm-2026-budget/index.html" class="trip-card-content">
+        <span class="trip-flag">🇸🇪</span>
+        <div>
+          <h2>Stockholm — Version Maline</h2>
+          <p>29 Juil – 3 Août · 6 jours · ~740 €</p>
+        </div>
+      </a>
+      <button class="a2hs-btn" onclick="event.stopPropagation();showA2HS('Stockholm Maline','trips/stockholm-2026-budget/index.html')">📲</button>
+    </div>
+    <div class="trip-card">
+      <a href="trips/stockholm-2026-expensive/index.html" class="trip-card-content">
+        <span class="trip-flag">🇸🇪</span>
+        <div>
+          <h2>Stockholm — Version Expensive</h2>
+          <p>29 Juil – 3 Août · 6 jours</p>
+        </div>
+      </a>
+      <button class="a2hs-btn" onclick="event.stopPropagation();showA2HS('Stockholm Full','trips/stockholm-2026-expensive/index.html')">📲</button>
+    </div>
+    <div class="trip-card">
+      <a href="trips/archipel-2026-varie/index.html" class="trip-card-content">
+        <span class="trip-flag">🇸🇪</span>
+        <div>
+          <h2>Suède Intérieure — Variée</h2>
+          <p>3–8 Août · 6 jours · Sigtuna</p>
+        </div>
+      </a>
+      <button class="a2hs-btn" onclick="event.stopPropagation();showA2HS('Suède Variée','trips/archipel-2026-varie/index.html')">📲</button>
+    </div>
+    <div class="trip-card">
+      <a href="trips/archipel-2026-nature/index.html" class="trip-card-content">
+        <span class="trip-flag">🇸🇪</span>
+        <div>
+          <h2>Archipel — Nature</h2>
+          <p>3–8 Août · 6 jours · Vaxholm</p>
+        </div>
+      </a>
+      <button class="a2hs-btn" onclick="event.stopPropagation();showA2HS('Archipel Nature','trips/archipel-2026-nature/index.html')">📲</button>
+    </div>
   </div>
 </div>
+
+<!-- Add to Home Screen modal -->
+<div class="a2hs-modal" id="a2hs-modal" onclick="closeA2HS()">
+  <div class="a2hs-sheet" onclick="event.stopPropagation()">
+    <h3 id="a2hs-title">Ajouter à l'écran d'accueil</h3>
+    <div class="a2hs-step">
+      <div class="a2hs-num">1</div>
+      <p>Ouvrir d'abord le guide :<br><a id="a2hs-link" href="#" style="color:var(--amber);font-weight:700">Ouvrir le guide</a></p>
+    </div>
+    <div class="a2hs-step">
+      <div class="a2hs-num">2</div>
+      <p>Appuyer sur <span class="ios-icon">&#xFEFF;<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span> (partager) en bas de Safari</p>
+    </div>
+    <div class="a2hs-step">
+      <div class="a2hs-num">3</div>
+      <p>Faire défiler et appuyer sur<br><b>« Sur l'écran d'accueil »</b></p>
+    </div>
+    <button class="a2hs-close" onclick="closeA2HS()">Compris !</button>
+  </div>
+</div>
+
+<script>
+function showA2HS(name, url) {
+  document.getElementById('a2hs-title').textContent = name;
+  document.getElementById('a2hs-link').href = url;
+  document.getElementById('a2hs-link').textContent = 'Ouvrir ' + name;
+  document.getElementById('a2hs-modal').classList.add('open');
+}
+function closeA2HS() {
+  document.getElementById('a2hs-modal').classList.remove('open');
+}
+</script>
 </body>
 </html>
