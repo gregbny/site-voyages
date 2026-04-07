@@ -167,6 +167,7 @@ body.fullmap-mode .page { overflow: hidden; }
    MAP
    ============================================================ */
 .map-wrap { height: 200px; width: 100%; border-bottom: 1px solid var(--border); }
+#map-full { height: calc(100dvh - var(--tabs-h, 45px)); width: 100%; }
 .maplibregl-canvas { outline: none; }
 
 /* ============================================================

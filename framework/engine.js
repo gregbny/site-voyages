@@ -343,7 +343,7 @@ function renderFullmapPage(page, pageIndex) {
 
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '" style="padding-bottom:0">';
   html += '<div style="position:relative">';
-  html += '<div id="map-full" style="height:calc(100dvh - 45px);width:100%"></div>';
+  html += '<div id="map-full"></div>';
 
   html += '<div class="map-toggles">';
   html += '<div class="tog-row">';
@@ -433,9 +433,9 @@ var TOTAL_PAGES = 0;
 
 /* ── Show page — with View Transitions ── */
 
-function showPage(n, animate, keepScroll) {
+function showPage(n, animate, isSwipe) {
   if (animate === undefined) animate = true;
-  if (keepScroll === undefined) keepScroll = false;
+  if (isSwipe === undefined) isSwipe = false;
 
   var tabs = document.querySelectorAll('.tab');
   tabs.forEach(function(t, i) { t.classList.toggle('active', i === n); });
@@ -450,8 +450,8 @@ function showPage(n, animate, keepScroll) {
     var fullmapIdx = getFullmapPageIndex();
     var isMap = n === fullmapIdx;
 
-    // Always scroll to top for fullmap, otherwise respect keepScroll
-    if (isMap || !keepScroll) window.scrollTo(0, 0);
+    // Always scroll to top on page change
+    window.scrollTo(0, 0);
 
     if (pagesWrap) {
       pagesWrap.style.transition = 'none';
@@ -469,16 +469,17 @@ function showPage(n, animate, keepScroll) {
   }
 
   // Use View Transitions for tab clicks (not swipe)
-  if (animate && !keepScroll && document.startViewTransition) {
+  if (animate && !isSwipe && document.startViewTransition) {
     document.startViewTransition(function() {
       applyPageChange();
     });
-  } else if (animate && keepScroll && pagesWrap) {
+  } else if (animate && isSwipe && pagesWrap) {
     // Swipe release: use CSS transition (smooth slide)
     var fullmapIdx = getFullmapPageIndex();
     var isMap = n === fullmapIdx;
 
-    if (isMap) window.scrollTo(0, 0);
+    // Scroll to top immediately
+    window.scrollTo(0, 0);
 
     pagesWrap.style.transition = 'transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1)';
     pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
@@ -758,6 +759,12 @@ window.addEventListener('load', function() {
 
   pagesWrap = document.querySelector('.pages-wrap');
   TOTAL_PAGES = TRIP.pages.length;
+
+  // Measure tabs height for dynamic fullmap sizing
+  var tabsWrap = document.querySelector('.tabs-wrap');
+  if (tabsWrap) {
+    document.documentElement.style.setProperty('--tabs-h', tabsWrap.offsetHeight + 'px');
+  }
 
   var firstDay = TRIP.pages.find(function(p) { return p.type === 'day'; });
   if (firstDay) {
