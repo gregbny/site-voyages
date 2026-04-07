@@ -431,6 +431,22 @@ var pagesWrap;
 var mapsLoaded = {};
 var TOTAL_PAGES = 0;
 
+/* ── Scroll helper — iOS Safari needs rAF + setTimeout ── */
+
+function scrollPastHero(isMap) {
+  var doScroll = function() {
+    if (isMap) {
+      window.scrollTo(0, 0);
+    } else {
+      var hero = document.querySelector('.hero');
+      if (hero) window.scrollTo(0, hero.offsetHeight);
+    }
+  };
+  doScroll();
+  requestAnimationFrame(function() { doScroll(); });
+  setTimeout(doScroll, 50);
+}
+
 /* ── Show page — with View Transitions ── */
 
 function showPage(n, animate, isSwipe) {
@@ -455,16 +471,8 @@ function showPage(n, animate, isSwipe) {
       pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
     }
 
-    var hero = document.querySelector('.hero');
-    hero.classList.toggle('map-mode', isMap);
-
-    // Scroll past hero so tabs stick at top on every page
-    if (isMap) {
-      window.scrollTo(0, 0);
-    } else {
-      var heroH = hero.offsetHeight;
-      window.scrollTo(0, heroH);
-    }
+    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+    scrollPastHero(isMap);
     document.body.classList.toggle('fullmap-mode', isMap);
 
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
@@ -488,15 +496,8 @@ function showPage(n, animate, isSwipe) {
     pagesWrap.style.transition = 'transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1)';
     pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
 
-    var hero = document.querySelector('.hero');
-    hero.classList.toggle('map-mode', isMap);
-
-    // Scroll past hero so tabs stick at top
-    if (isMap) {
-      window.scrollTo(0, 0);
-    } else {
-      window.scrollTo(0, hero.offsetHeight);
-    }
+    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+    scrollPastHero(isMap);
     document.body.classList.toggle('fullmap-mode', isMap);
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
     if (isMap && mapState.map) {
@@ -787,8 +788,7 @@ window.addEventListener('load', function() {
   }
 
   // Scroll past hero on initial load
-  var hero = document.querySelector('.hero');
-  if (hero) window.scrollTo(0, hero.offsetHeight);
+  scrollPastHero(false);
 
   initSwipe();
   initKeyboard();
