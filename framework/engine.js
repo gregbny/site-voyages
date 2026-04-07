@@ -450,14 +450,21 @@ function showPage(n, animate, isSwipe) {
     var fullmapIdx = getFullmapPageIndex();
     var isMap = n === fullmapIdx;
 
-    // Always scroll to top on page change
-    window.scrollTo(0, 0);
-
     if (pagesWrap) {
       pagesWrap.style.transition = 'none';
       pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
     }
-    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+
+    var hero = document.querySelector('.hero');
+    hero.classList.toggle('map-mode', isMap);
+
+    // Scroll past hero so tabs stick at top on every page
+    if (isMap) {
+      window.scrollTo(0, 0);
+    } else {
+      var heroH = hero.offsetHeight;
+      window.scrollTo(0, heroH);
+    }
     document.body.classList.toggle('fullmap-mode', isMap);
 
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
@@ -478,12 +485,18 @@ function showPage(n, animate, isSwipe) {
     var fullmapIdx = getFullmapPageIndex();
     var isMap = n === fullmapIdx;
 
-    // Scroll to top immediately
-    window.scrollTo(0, 0);
-
     pagesWrap.style.transition = 'transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1)';
     pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
-    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+
+    var hero = document.querySelector('.hero');
+    hero.classList.toggle('map-mode', isMap);
+
+    // Scroll past hero so tabs stick at top
+    if (isMap) {
+      window.scrollTo(0, 0);
+    } else {
+      window.scrollTo(0, hero.offsetHeight);
+    }
     document.body.classList.toggle('fullmap-mode', isMap);
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
     if (isMap && mapState.map) {
@@ -772,6 +785,10 @@ window.addEventListener('load', function() {
     initMap(firstDayIdx);
     mapsLoaded[firstDayIdx] = true;
   }
+
+  // Scroll past hero on initial load
+  var hero = document.querySelector('.hero');
+  if (hero) window.scrollTo(0, hero.offsetHeight);
 
   initSwipe();
   initKeyboard();
