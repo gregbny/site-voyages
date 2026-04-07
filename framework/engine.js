@@ -1,5 +1,5 @@
 /* ============================================================
-   RENDERING ENGINE — Multi-trip Travel Guide Framework
+   RENDERING ENGINE — Multi-trip Travel Guide Framework (Brut)
    Reads a global `TRIP` object and generates the full page DOM.
    ============================================================ */
 
@@ -14,6 +14,11 @@ function esc(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+/* Mapbox uses [lng, lat], TRIP data uses [lat, lng] */
+function toLngLat(p) { return [p[1], p[0]]; }
+
+/* MapLibre GL — free, no token needed */
+
 /* ── Dynamic page indices ── */
 
 function getFullmapPageIndex() {
@@ -24,34 +29,37 @@ function getAddressesPageIndex() {
   return TRIP.pages.findIndex(function(p) { return p.type === 'addresses'; });
 }
 
-/* ── Hero ── */
+/* ── Hero — Brut ── */
 
 function renderHero() {
   var meta = TRIP.meta;
-  var colors = Object.values(TRIP.dayColors);
-  var c0 = colors[0] || '#F59E0B';
-  var c1 = colors[1] || c0;
-  var c2 = colors[2] || c0;
 
-  var chipsHtml = '';
+  // Build right-side metadata from chips
+  var metaHtml = '<div class="hero-meta">';
   if (meta.chips && meta.chips.length) {
-    chipsHtml = '<div class="hero-chips">';
     meta.chips.forEach(function(chip) {
-      chipsHtml += '<span class="chip' + (chip.highlight ? ' highlight' : '') + '">' + chip.text + '</span>';
+      metaHtml += '<span>' + chip.text + '</span>';
     });
-    chipsHtml += '</div>';
+  }
+  metaHtml += '</div>';
+
+  // Title: uppercase with period
+  var title = meta.title.toUpperCase();
+  if (title.charAt(title.length - 1) !== '.') title += '.';
+
+  // Date line from first highlight chip or subtitle
+  var dateLine = meta.subtitle || '';
+  if (meta.chips) {
+    var hl = meta.chips.find(function(c) { return c.highlight; });
+    if (hl) dateLine = hl.text;
   }
 
   return '<div class="hero">' +
-    '<div class="hero-grad" style="position:absolute;inset:0;pointer-events:none;' +
-      'background:radial-gradient(ellipse at 85% -10%, ' + c0 + '66 0%, transparent 55%),' +
-      'radial-gradient(ellipse at -10% 110%, ' + c2 + '4D 0%, transparent 55%),' +
-      'radial-gradient(ellipse at 50% 120%, ' + c1 + '26 0%, transparent 50%)"></div>' +
-    '<span class="hero-emoji" style="position:absolute;right:-8px;bottom:-4px;font-size:5.5rem;opacity:0.06;pointer-events:none;line-height:1">' + (meta.heroEmoji || '') + '</span>' +
-    '<div class="hero-flag">' + meta.flag + '</div>' +
-    '<h1>' + meta.title + '</h1>' +
-    '<p class="hero-sub">' + meta.subtitle + '</p>' +
-    chipsHtml +
+    '<div class="hero-top">' +
+      '<h1>' + title + '</h1>' +
+      metaHtml +
+    '</div>' +
+    '<span class="hero-sub">' + dateLine + '</span>' +
   '</div>';
 }
 
@@ -95,19 +103,15 @@ function renderCard(card) {
   }
   html += '</div>';
 
-  // card-body
   if (card.body) {
     html += '<div class="card-body">' + card.body + '</div>';
   }
-  // card-verdict
   if (card.verdict) {
     html += '<div class="card-verdict">' + card.verdict + '</div>';
   }
-  // card-warn
   if (card.warn) {
     html += '<div class="card-warn-note">' + card.warn + '</div>';
   }
-  // CTA group
   if (card.mapsQuery) {
     var q = encodeURIComponent(card.mapsQuery);
     var n = encodeURIComponent(card.name);
@@ -184,25 +188,18 @@ function renderSection(section) {
   switch (section.type) {
     case 'label':
       return '<div class="sec-label">' + section.text + '</div>';
-
     case 'cards':
       return renderCards(section.items);
-
     case 'infobox':
       return '<div style="margin:0 16px">' + renderInfobox(section) + '</div>';
-
     case 'infoboxGroup':
       return renderInfoboxGroup(section);
-
     case 'apps':
       return renderApps(section);
-
     case 'divider':
       return '<div class="divider"></div>';
-
     case 'spacer':
       return '<div class="spacer"></div>';
-
     default:
       return '';
   }
@@ -222,23 +219,25 @@ function renderBanner(banner) {
   return html;
 }
 
-/* ── Timeline rendering ── */
+/* ── Timeline rendering — Brut (no t-line) ── */
 
 function renderTimeline(timeline, accent) {
-  var addressesPageIdx = getAddressesPageIndex();
   var html = '<div class="sec-label">Planning du jour</div>';
   html += '<div class="timeline' + (accent ? ' accent-' + accent : '') + '">';
   timeline.forEach(function(slot) {
     html += '<div class="tslot">';
-    html += '<div class="t-time">' + slot.time.replace(/\n/g, '<br>') + '</div>';
-    html += '<div class="t-line"></div>';
+    html += '<div class="t-time">' + slot.time.replace(/\n/g, ' – ') + '</div>';
     html += '<div class="t-body">';
     html += '<div class="t-title">' + slot.title + '</div>';
     if (slot.items && slot.items.length) {
       html += '<ul class="t-items">';
       slot.items.forEach(function(item) {
+        var prefix = '';
+        if (item.type === 'tip') prefix = '✦ ';
+        else if (item.type === 'sub') prefix = '↳ ';
+        else if (item.type === 'warn') prefix = '⚠ ';
         var cls = item.type ? ' class="' + item.type + '"' : '';
-        html += '<li' + cls + '>' + item.text + '</li>';
+        html += '<li' + cls + '>' + prefix + item.text + '</li>';
       });
       html += '</ul>';
     }
@@ -294,7 +293,6 @@ function renderAddressesPage(page, pageIndex) {
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '">';
   html += renderBanner(page.banner);
 
-  // Zone filter buttons
   if (page.zones && page.zones.length) {
     html += '<div class="filter-wrap">';
     page.zones.forEach(function(zone, i) {
@@ -302,7 +300,6 @@ function renderAddressesPage(page, pageIndex) {
     });
     html += '</div>';
 
-    // Zone panes
     page.zones.forEach(function(zone, i) {
       html += '<div class="zone-pane' + (i === 0 ? ' active' : '') + '" id="zone' + i + '">';
       if (zone.sections) {
@@ -348,7 +345,6 @@ function renderFullmapPage(page, pageIndex) {
   html += '<div style="position:relative">';
   html += '<div id="map-full" style="height:calc(100dvh - 57px);width:100%"></div>';
 
-  // Toggles
   html += '<div class="map-toggles">';
   html += '<div class="tog-row">';
   dayKeys.forEach(function(day) {
@@ -380,25 +376,21 @@ function renderBudgetPage(page, pageIndex) {
       html += '<div class="sec-label"' + (ti > 0 ? ' style="margin-top:16px"' : '') + '>' + table.label + '</div>';
       html += '<div style="padding:0 16px; overflow-x:auto">';
       html += '<table class="btable">';
-      // headers
       html += '<thead><tr>';
       table.headers.forEach(function(h) {
         html += '<th>' + h + '</th>';
       });
       html += '</tr></thead>';
-      // rows
       html += '<tbody>';
       table.rows.forEach(function(row) {
         html += '<tr>';
         row.forEach(function(cell, ci) {
-          // First column is plain text, rest are numbers
           var isNum = ci > 0 && cell !== '—';
           html += '<td' + (isNum ? ' class="num"' : '') + '>' + cell + '</td>';
         });
         html += '</tr>';
       });
       html += '</tbody>';
-      // footer
       if (table.footer) {
         html += '<tfoot><tr>';
         table.footer.forEach(function(cell) {
@@ -439,7 +431,7 @@ var pagesWrap;
 var mapsLoaded = {};
 var TOTAL_PAGES = 0;
 
-/* ── Show page (slider) ── */
+/* ── Show page — with View Transitions ── */
 
 function showPage(n, animate, keepScroll) {
   if (animate === undefined) animate = true;
@@ -447,21 +439,39 @@ function showPage(n, animate, keepScroll) {
 
   var tabs = document.querySelectorAll('.tab');
   tabs.forEach(function(t, i) { t.classList.toggle('active', i === n); });
+
+  var oldPage = curPage;
   curPage = n;
 
-  if (pagesWrap) {
-    pagesWrap.style.transition = animate
-      ? 'transform 0.38s cubic-bezier(0.4, 0, 0.2, 1)'
-      : 'none';
-    pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
+  // Direction class for View Transitions
+  document.documentElement.classList.toggle('nav-back', n < oldPage);
+
+  function applyPageChange() {
+    if (pagesWrap) {
+      pagesWrap.style.transition = 'none';
+      pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
+    }
+    var fullmapIdx = getFullmapPageIndex();
+    document.querySelector('.hero').classList.toggle('map-mode', n === fullmapIdx);
+    if (!keepScroll) window.scrollTo(0, 0);
+    if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
   }
 
-  var fullmapIdx = getFullmapPageIndex();
-  document.querySelector('.hero').classList.toggle('map-mode', n === fullmapIdx);
-
-  if (!keepScroll) window.scrollTo(0, 0);
-
-  if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
+  // Use View Transitions for tab clicks (not swipe)
+  if (animate && !keepScroll && document.startViewTransition) {
+    document.startViewTransition(function() {
+      applyPageChange();
+    });
+  } else if (animate && keepScroll && pagesWrap) {
+    // Swipe release: use CSS transition (smooth slide)
+    pagesWrap.style.transition = 'transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1)';
+    pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
+    var fullmapIdx = getFullmapPageIndex();
+    document.querySelector('.hero').classList.toggle('map-mode', n === fullmapIdx);
+    if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
+  } else {
+    applyPageChange();
+  }
 
   if (tabs[n]) tabs[n].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
 }
@@ -498,8 +508,8 @@ function updateMapVis() {
       || (mapState.person === (TRIP.meta.people[1] || 'sofie').toLowerCase() && entry.isSofie)
       || (mapState.person === (TRIP.meta.people[0] || 'greg').toLowerCase() && !entry.isSofie);
     var show = dayOk && personOk;
-    if (show && !mapState.map.hasLayer(entry.marker)) entry.marker.addTo(mapState.map);
-    else if (!show) mapState.map.removeLayer(entry.marker);
+    if (show && !entry.marker.getElement().parentNode) entry.marker.addTo(mapState.map);
+    else if (!show) entry.marker.remove();
   });
 }
 
@@ -522,67 +532,91 @@ function togglePerson(p) {
   updateMapVis();
 }
 
-/* ── Leaflet map initialization ── */
+/* ── Mapbox marker helper ── */
+
+function createPillEl(label, color) {
+  var el = document.createElement('div');
+  el.style.cssText = 'background:' + color + ';color:#fff;padding:3px 9px;border-radius:30px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff;font-family:Inter,-apple-system,sans-serif;cursor:pointer';
+  el.textContent = label;
+  return el;
+}
+
+/* ── Mapbox map initialization ── */
 
 function initMap(pageNum) {
+  if (typeof maplibregl === 'undefined') return;
+
   var fullmapIdx = getFullmapPageIndex();
   var personTag = TRIP.meta.personTag || '♥';
+  var MAP_STYLE = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
 
   /* ── Full map ── */
   if (pageNum === fullmapIdx) {
     var el = document.getElementById('map-full');
-    if (!el || el._leaflet_id) return;
+    if (!el || el.dataset.mapInit) return;
+    el.dataset.mapInit = '1';
     var center = TRIP.meta.mapCenter || [51.508, -0.130];
     var zoom = TRIP.meta.mapZoom || 12;
-    var map = L.map('map-full', { zoomControl: true, attributionControl: false });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
-    map.setView(center, zoom);
+
+    var map = new maplibregl.Map({
+      container: 'map-full',
+      style: MAP_STYLE,
+      center: toLngLat(center),
+      zoom: zoom,
+      attributionControl: false
+    });
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
+
     mapState.map = map;
     mapState.markers = [];
 
-    // Initialize day toggle state
     var dayKeys = Object.keys(TRIP.dayColors);
     dayKeys.forEach(function(day) { mapState.days[parseInt(day)] = true; });
 
-    dayKeys.forEach(function(dayStr) {
-      var day = parseInt(dayStr);
-      var d = TRIP.mapData[day];
-      if (!d) return;
-      var dayColor = TRIP.dayColors[day];
-      d.pts.forEach(function(m) {
-        var isSofie = m.label.includes(personTag);
-        var color = isSofie ? '#EC4899' : dayColor;
-        var icon = L.divIcon({
-          html: '<div style="background:' + color + ';color:#fff;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);border:2px solid #fff">' + m.label + '</div>',
-          className: '', iconAnchor: [0, 0]
+    map.on('load', function() {
+      dayKeys.forEach(function(dayStr) {
+        var day = parseInt(dayStr);
+        var d = TRIP.mapData[day];
+        if (!d) return;
+        var dayColor = TRIP.dayColors[day];
+        d.pts.forEach(function(m) {
+          var isSofie = m.label.includes(personTag);
+          var color = isSofie ? '#EC4899' : dayColor;
+          var pillEl = createPillEl(m.label, color);
+
+          var name = m.label.replace(personTag + ' ', '');
+          var lat = m.p[0], lng = m.p[1];
+          var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
+          var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(name);
+          var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(name);
+          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' London');
+
+          var popupHtml = '<div class="mp">' +
+            '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' · ' + name + '</a></div>' +
+            '<div class="mp-links">' +
+              '<a class="mp-btn" href="' + gUrl + '" target="_blank">🗺 Google</a>' +
+              '<a class="mp-btn" href="' + aUrl + '" target="_blank">🍎 Apple</a>' +
+              '<a class="mp-btn" href="' + cUrl + '" target="_blank">🚇 City</a>' +
+            '</div></div>';
+
+          var popup = new maplibregl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
+          var marker = new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
+            .setLngLat(toLngLat(m.p))
+            .setPopup(popup)
+            .addTo(map);
+
+          mapState.markers.push({ marker: marker, day: day, isSofie: isSofie });
         });
-        var name = m.label.replace(personTag + ' ', '');
-        var lat = m.p[0], lng = m.p[1];
-        var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
-        var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(name);
-        var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(name);
-        var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' London');
-        var popup = '<div class="mp">' +
-          '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' \u00b7 ' + name + '</a></div>' +
-          '<div class="mp-links">' +
-            '<a class="mp-btn" href="' + gUrl + '" target="_blank">\uD83D\uDDFA Google</a>' +
-            '<a class="mp-btn" href="' + aUrl + '" target="_blank">\uD83C\uDF4E Apple</a>' +
-            '<a class="mp-btn" href="' + cUrl + '" target="_blank">\uD83D\uDE87 City</a>' +
-          '</div></div>';
-        var marker = L.marker(m.p, { icon: icon }).addTo(map).bindPopup(popup, { maxWidth: 220 });
-        mapState.markers.push({ marker: marker, day: day, isSofie: isSofie });
       });
     });
 
     // Geolocation
-    if (navigator.geolocation) {
-      map.locate({ watch: false, enableHighAccuracy: true, timeout: 10000 });
-      map.on('locationfound', function(e) {
-        L.circleMarker(e.latlng, { radius: 9, color: '#fff', fillColor: '#2563EB', fillOpacity: 1, weight: 2.5 })
-          .addTo(map).bindPopup('\uD83D\uDCCD Vous \u00eates ici');
-        L.circle(e.latlng, { radius: e.accuracy / 2, color: '#2563EB', fillColor: '#2563EB', fillOpacity: 0.12, weight: 1 }).addTo(map);
-      });
-    }
+    map.addControl(new maplibregl.GeolocateControl({
+      positionOptions: { enableHighAccuracy: true },
+      trackUserLocation: false,
+      showUserHeading: false
+    }), 'top-right');
+
     return;
   }
 
@@ -593,36 +627,43 @@ function initMap(pageNum) {
   var d = TRIP.mapData[dayNum];
   if (!d) return;
   var el2 = document.getElementById('map' + pageNum);
-  if (!el2 || el2._leaflet_id) return;
+  if (!el2 || el2.dataset.mapInit) return;
+  el2.dataset.mapInit = '1';
   var dayColor = TRIP.dayColors[dayNum] || '#333';
 
-  var dayMap = L.map('map' + pageNum, { zoomControl: false, attributionControl: false });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(dayMap);
-  dayMap.setView(d.center, d.zoom);
+  var dayMap = new maplibregl.Map({
+    container: 'map' + pageNum,
+    style: MAP_STYLE,
+    center: toLngLat(d.center),
+    zoom: d.zoom,
+    attributionControl: false,
+    interactive: true
+  });
 
-  d.pts.forEach(function(m) {
-    var icon = L.divIcon({
-      html: '<div style="background:' + dayColor + ';color:#fff;padding:3px 9px;border-radius:30px;font-size:11px;font-weight:700;white-space:nowrap;box-shadow:0 2px 8px rgba(0,0,0,0.25);border:2px solid #fff">' + m.label + '</div>',
-      className: '', iconAnchor: [0, 0]
+  dayMap.on('load', function() {
+    d.pts.forEach(function(m) {
+      var pillEl = createPillEl(m.label, dayColor);
+      var popup = new maplibregl.Popup({ maxWidth: '200px', offset: 10 }).setHTML('<b>' + m.label + '</b>');
+      new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
+        .setLngLat(toLngLat(m.p))
+        .setPopup(popup)
+        .addTo(dayMap);
     });
-    L.marker(m.p, { icon: icon }).addTo(dayMap).bindPopup('<b>' + m.label + '</b>');
   });
 
   // Geolocation
-  if (navigator.geolocation) {
-    dayMap.locate({ watch: false, enableHighAccuracy: true, timeout: 10000 });
-    dayMap.on('locationfound', function(e) {
-      L.circleMarker(e.latlng, { radius: 9, color: '#fff', fillColor: '#2563EB', fillOpacity: 1, weight: 2.5 })
-        .addTo(dayMap).bindPopup('\uD83D\uDCCD Vous \u00eates ici');
-      L.circle(e.latlng, { radius: e.accuracy / 2, color: '#2563EB', fillColor: '#2563EB', fillOpacity: 0.12, weight: 1 }).addTo(dayMap);
-    });
-  }
+  dayMap.addControl(new maplibregl.GeolocateControl({
+    positionOptions: { enableHighAccuracy: true },
+    trackUserLocation: false,
+    showUserHeading: false
+  }), 'top-right');
 }
 
-/* ── Swipe handling ── */
+/* ── Swipe handling — improved ── */
 
 function initSwipe() {
   var _tx = 0, _ty = 0, _dragging = false, _startPage = 0, _decided = false;
+  var _startTime = 0;
   var fullmapIdx = getFullmapPageIndex();
 
   document.addEventListener('touchstart', function(e) {
@@ -634,6 +675,7 @@ function initSwipe() {
     _startPage = curPage;
     _dragging = true;
     _decided = false;
+    _startTime = Date.now();
     if (pagesWrap) pagesWrap.style.transition = 'none';
   }, { passive: true });
 
@@ -659,10 +701,17 @@ function initSwipe() {
     _dragging = false;
     var dx = e.changedTouches[0].clientX - _tx;
     var dy = Math.abs(e.changedTouches[0].clientY - _ty);
+    var elapsed = Date.now() - _startTime;
+    var velocity = Math.abs(dx) / elapsed; // px/ms
     var target = _startPage;
-    if (_decided && Math.abs(dx) > 48 && Math.abs(dx) > dy) {
-      if (dx < 0 && _startPage < TOTAL_PAGES - 1) target = _startPage + 1;
-      if (dx > 0 && _startPage > 0) target = _startPage - 1;
+
+    if (_decided) {
+      // Velocity-based or distance-based decision
+      var threshold = velocity > 0.4 ? 20 : 48;
+      if (Math.abs(dx) > threshold && Math.abs(dx) > dy) {
+        if (dx < 0 && _startPage < TOTAL_PAGES - 1) target = _startPage + 1;
+        if (dx > 0 && _startPage > 0) target = _startPage - 1;
+      }
     }
     showPage(target, true, true);
   }, { passive: true });
@@ -683,18 +732,14 @@ window.addEventListener('load', function() {
   var app = document.getElementById('app');
   app.innerHTML = renderHero() + renderTabs();
 
-  // Build page slider
   var pagesHtml = TRIP.pages.map(function(page, i) { return renderPage(page, i); }).join('');
   app.innerHTML += '<div class="pages-outer"><div class="pages-wrap">' + pagesHtml + '</div></div>';
 
-  // Set document title
   document.title = TRIP.meta.flag + ' ' + TRIP.meta.title;
 
-  // Init references
   pagesWrap = document.querySelector('.pages-wrap');
   TOTAL_PAGES = TRIP.pages.length;
 
-  // Init first day map
   var firstDay = TRIP.pages.find(function(p) { return p.type === 'day'; });
   if (firstDay) {
     var firstDayIdx = TRIP.pages.indexOf(firstDay);
