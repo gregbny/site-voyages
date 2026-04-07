@@ -434,17 +434,17 @@ var TOTAL_PAGES = 0;
 /* ── Scroll helper — iOS Safari needs rAF + setTimeout ── */
 
 function scrollPastHero(isMap) {
-  var doScroll = function() {
-    if (isMap) {
-      window.scrollTo(0, 0);
-    } else {
-      var hero = document.querySelector('.hero');
-      if (hero) window.scrollTo(0, hero.offsetHeight);
-    }
-  };
-  doScroll();
-  requestAnimationFrame(function() { doScroll(); });
-  setTimeout(doScroll, 50);
+  if (isMap) {
+    window.scrollTo(0, 0);
+    return;
+  }
+  var tabs = document.querySelector('.tabs-wrap');
+  if (!tabs) return;
+  var go = function() { tabs.scrollIntoView({ block: 'start', behavior: 'instant' }); };
+  go();
+  requestAnimationFrame(go);
+  setTimeout(go, 80);
+  setTimeout(go, 200);
 }
 
 /* ── Show page — with View Transitions ── */
