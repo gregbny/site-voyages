@@ -343,7 +343,7 @@ function renderFullmapPage(page, pageIndex) {
 
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '" style="padding-bottom:0">';
   html += '<div style="position:relative">';
-  html += '<div id="map-full" style="height:calc(100dvh - 57px);width:100%"></div>';
+  html += '<div id="map-full" style="height:calc(100dvh - 45px);width:100%"></div>';
 
   html += '<div class="map-toggles">';
   html += '<div class="tog-row">';
@@ -447,14 +447,25 @@ function showPage(n, animate, keepScroll) {
   document.documentElement.classList.toggle('nav-back', n < oldPage);
 
   function applyPageChange() {
+    var fullmapIdx = getFullmapPageIndex();
+    var isMap = n === fullmapIdx;
+
+    // Always scroll to top for fullmap, otherwise respect keepScroll
+    if (isMap || !keepScroll) window.scrollTo(0, 0);
+
     if (pagesWrap) {
       pagesWrap.style.transition = 'none';
       pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
     }
-    var fullmapIdx = getFullmapPageIndex();
-    document.querySelector('.hero').classList.toggle('map-mode', n === fullmapIdx);
-    if (!keepScroll) window.scrollTo(0, 0);
+    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+    document.body.classList.toggle('fullmap-mode', isMap);
+
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
+
+    // Resize map when entering fullmap (fixes stale dimensions)
+    if (isMap && mapState.map) {
+      setTimeout(function() { mapState.map.resize(); }, 50);
+    }
   }
 
   // Use View Transitions for tab clicks (not swipe)
@@ -464,11 +475,19 @@ function showPage(n, animate, keepScroll) {
     });
   } else if (animate && keepScroll && pagesWrap) {
     // Swipe release: use CSS transition (smooth slide)
+    var fullmapIdx = getFullmapPageIndex();
+    var isMap = n === fullmapIdx;
+
+    if (isMap) window.scrollTo(0, 0);
+
     pagesWrap.style.transition = 'transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1)';
     pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
-    var fullmapIdx = getFullmapPageIndex();
-    document.querySelector('.hero').classList.toggle('map-mode', n === fullmapIdx);
+    document.querySelector('.hero').classList.toggle('map-mode', isMap);
+    document.body.classList.toggle('fullmap-mode', isMap);
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
+    if (isMap && mapState.map) {
+      setTimeout(function() { mapState.map.resize(); }, 350);
+    }
   } else {
     applyPageChange();
   }

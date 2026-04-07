@@ -105,7 +105,12 @@ body {
 .pages-wrap { display: flex; will-change: transform; }
 .page { flex: 0 0 100vw; min-width: 0; padding-bottom: 48px; }
 .hero { transition: opacity 0.2s; }
-.hero.map-mode { opacity: 0; pointer-events: none; height: 0; overflow: hidden; padding: 0; }
+.hero.map-mode { opacity: 0; pointer-events: none; height: 0; overflow: hidden; padding: 0; margin: 0; }
+
+/* Fullmap mode — lock body scroll, map fills viewport */
+body.fullmap-mode { overflow: hidden; position: fixed; width: 100%; height: 100%; }
+body.fullmap-mode .pages-outer { overflow: visible; }
+body.fullmap-mode .page { overflow: hidden; }
 
 /* ============================================================
    VIEW TRANSITIONS
