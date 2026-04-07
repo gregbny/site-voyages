@@ -162,7 +162,7 @@ body {
    MAP
    ============================================================ */
 .map-wrap { height: 200px; width: 100%; border-bottom: 1px solid var(--border); }
-.mapboxgl-canvas { outline: none; }
+.maplibregl-canvas { outline: none; }
 
 /* ============================================================
    SECTION LABEL
@@ -315,8 +315,8 @@ strong, b { color: var(--ink); font-weight: 700; }
 .mp-btn:active { background: #e8e7e3; }
 
 /* Mapbox popup overrides */
-.mapboxgl-popup-content { border-radius: 12px; padding: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
-.mapboxgl-popup-close-button { font-size: 18px; padding: 4px 8px; color: var(--ink-3); }
+.maplibregl-popup-content { border-radius: 12px; padding: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.maplibregl-popup-close-button { font-size: 18px; padding: 4px 8px; color: var(--ink-3); }
 
 /* ============================================================
    INFO BOXES

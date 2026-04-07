@@ -17,8 +17,7 @@ function esc(str) {
 /* Mapbox uses [lng, lat], TRIP data uses [lat, lng] */
 function toLngLat(p) { return [p[1], p[0]]; }
 
-/* Mapbox token — replace with your own from https://account.mapbox.com */
-var MAPBOX_TOKEN = 'YOUR_MAPBOX_TOKEN_HERE';
+/* MapLibre GL — free, no token needed */
 
 /* ── Dynamic page indices ── */
 
@@ -545,12 +544,11 @@ function createPillEl(label, color) {
 /* ── Mapbox map initialization ── */
 
 function initMap(pageNum) {
-  if (typeof mapboxgl === 'undefined') return;
-  mapboxgl.accessToken = MAPBOX_TOKEN;
+  if (typeof maplibregl === 'undefined') return;
 
   var fullmapIdx = getFullmapPageIndex();
   var personTag = TRIP.meta.personTag || '♥';
-  var MAPBOX_STYLE = 'mapbox://styles/mapbox/light-v11';
+  var MAP_STYLE = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
 
   /* ── Full map ── */
   if (pageNum === fullmapIdx) {
@@ -560,14 +558,14 @@ function initMap(pageNum) {
     var center = TRIP.meta.mapCenter || [51.508, -0.130];
     var zoom = TRIP.meta.mapZoom || 12;
 
-    var map = new mapboxgl.Map({
+    var map = new maplibregl.Map({
       container: 'map-full',
-      style: MAPBOX_STYLE,
+      style: MAP_STYLE,
       center: toLngLat(center),
       zoom: zoom,
       attributionControl: false
     });
-    map.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'top-right');
+    map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-right');
 
     mapState.map = map;
     mapState.markers = [];
@@ -601,8 +599,8 @@ function initMap(pageNum) {
               '<a class="mp-btn" href="' + cUrl + '" target="_blank">🚇 City</a>' +
             '</div></div>';
 
-          var popup = new mapboxgl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
-          var marker = new mapboxgl.Marker({ element: pillEl, anchor: 'bottom-left' })
+          var popup = new maplibregl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
+          var marker = new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
             .setLngLat(toLngLat(m.p))
             .setPopup(popup)
             .addTo(map);
@@ -613,7 +611,7 @@ function initMap(pageNum) {
     });
 
     // Geolocation
-    map.addControl(new mapboxgl.GeolocateControl({
+    map.addControl(new maplibregl.GeolocateControl({
       positionOptions: { enableHighAccuracy: true },
       trackUserLocation: false,
       showUserHeading: false
@@ -633,9 +631,9 @@ function initMap(pageNum) {
   el2.dataset.mapInit = '1';
   var dayColor = TRIP.dayColors[dayNum] || '#333';
 
-  var dayMap = new mapboxgl.Map({
+  var dayMap = new maplibregl.Map({
     container: 'map' + pageNum,
-    style: MAPBOX_STYLE,
+    style: MAP_STYLE,
     center: toLngLat(d.center),
     zoom: d.zoom,
     attributionControl: false,
@@ -645,8 +643,8 @@ function initMap(pageNum) {
   dayMap.on('load', function() {
     d.pts.forEach(function(m) {
       var pillEl = createPillEl(m.label, dayColor);
-      var popup = new mapboxgl.Popup({ maxWidth: '200px', offset: 10 }).setHTML('<b>' + m.label + '</b>');
-      new mapboxgl.Marker({ element: pillEl, anchor: 'bottom-left' })
+      var popup = new maplibregl.Popup({ maxWidth: '200px', offset: 10 }).setHTML('<b>' + m.label + '</b>');
+      new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
         .setLngLat(toLngLat(m.p))
         .setPopup(popup)
         .addTo(dayMap);
@@ -654,7 +652,7 @@ function initMap(pageNum) {
   });
 
   // Geolocation
-  dayMap.addControl(new mapboxgl.GeolocateControl({
+  dayMap.addControl(new maplibregl.GeolocateControl({
     positionOptions: { enableHighAccuracy: true },
     trackUserLocation: false,
     showUserHeading: false
