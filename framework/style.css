@@ -1,6 +1,8 @@
 /* ============================================================
-   DESIGN SYSTEM — Travel Guide Framework
+   DESIGN SYSTEM — Travel Guide Framework (Brut Edition)
    ============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
 :root {
   --ink:       #0D0D12;
   --ink-2:     #3A3A4A;
@@ -27,7 +29,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
@@ -35,48 +37,38 @@ body {
 }
 
 /* ============================================================
-   HERO
+   HERO — Brut
    ============================================================ */
 .hero {
   background: var(--ink);
   color: white;
-  padding: 32px 20px 28px;
-  position: relative;
-  overflow: hidden;
+  padding: 24px 20px 20px;
+  display: flex; flex-direction: column; gap: 14px;
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  pointer-events: none;
+.hero-top {
+  display: flex; align-items: flex-end; justify-content: space-between;
 }
-.hero::after {
-  position: absolute; right: -8px; bottom: -4px;
-  font-size: 5.5rem; opacity: 0.06; pointer-events: none;
-  line-height: 1;
-}
-.hero-flag { font-size: 2.4rem; line-height: 1; margin-bottom: 12px; }
 .hero h1 {
-  font-size: 2.2rem; font-weight: 800; letter-spacing: -1.8px; line-height: 1;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.8) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  font-size: 3.5rem; font-weight: 900; letter-spacing: -3.5px; line-height: 0.92;
+  color: #fff; text-transform: uppercase;
 }
-.hero-sub { font-size: 0.82rem; color: rgba(255,255,255,0.5); margin-top: 6px; letter-spacing: 0.3px; }
-.hero-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
-.chip {
-  background: rgba(255,255,255,0.1);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.85);
-  border-radius: 20px; padding: 5px 12px;
-  font-size: 0.72rem; font-weight: 600; backdrop-filter: blur(4px);
+.hero-meta {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 3px;
+  padding-bottom: 4px;
 }
-.chip.highlight {
-  background: rgba(245,158,11,0.2);
-  border-color: rgba(245,158,11,0.4);
-  color: #FCD34D;
+.hero-meta span {
+  font-size: 0.625rem; font-weight: 700; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.3px;
 }
+.hero-sub { font-size: 0.875rem; font-weight: 600; color: #fff; letter-spacing: 0.5px; }
+/* Legacy — hidden in brut */
+.hero-flag { display: none; }
+.hero-chips { display: none; }
+.chip { display: none; }
+.hero::before, .hero::after { display: none; }
 
 /* ============================================================
-   STICKY NAV TABS
+   STICKY NAV TABS — Brut
    ============================================================ */
 .tabs-wrap {
   background: var(--ink);
@@ -84,20 +76,22 @@ body {
   position: sticky; top: 0; z-index: 200;
   overflow-x: auto; white-space: nowrap;
   scrollbar-width: none;
-  padding: 8px 8px;
+  padding: 10px 20px;
 }
 .tabs-wrap::-webkit-scrollbar { display: none; }
-.tabs { display: flex; gap: 4px; }
+.tabs { display: flex; gap: 0; }
 .tab {
   flex: 0 0 auto;
-  padding: 8px 14px;
-  color: rgba(255,255,255,0.45);
-  font-size: 0.73rem; font-weight: 700;
+  padding: 6px 10px;
+  color: rgba(255,255,255,0.3);
+  font-size: 0.625rem; font-weight: 800;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 4px;
   border: none;
   transition: color 0.15s, background 0.15s;
-  user-select: none; letter-spacing: 0.3px;
+  user-select: none; letter-spacing: 1px;
+  text-transform: uppercase;
+  -webkit-tap-highlight-color: transparent;
 }
 .tab.active {
   color: var(--ink);
@@ -114,93 +108,115 @@ body {
 .hero.map-mode { opacity: 0; pointer-events: none; height: 0; overflow: hidden; padding: 0; }
 
 /* ============================================================
-   DAY BANNER
+   VIEW TRANSITIONS
+   ============================================================ */
+::view-transition-old(root) {
+  animation: 0.2s ease-out both vt-fade-out;
+}
+::view-transition-new(root) {
+  animation: 0.2s ease-out both vt-fade-in;
+}
+@keyframes vt-fade-out {
+  to { opacity: 0; transform: translateX(-20px); }
+}
+@keyframes vt-fade-in {
+  from { opacity: 0; transform: translateX(20px); }
+}
+:root.nav-back ::view-transition-old(root) {
+  animation-name: vt-fade-out-back;
+}
+:root.nav-back ::view-transition-new(root) {
+  animation-name: vt-fade-in-back;
+}
+@keyframes vt-fade-out-back {
+  to { opacity: 0; transform: translateX(20px); }
+}
+@keyframes vt-fade-in-back {
+  from { opacity: 0; transform: translateX(-20px); }
+}
+
+/* ============================================================
+   DAY BANNER — Brut
    ============================================================ */
 .day-banner {
-  padding: 14px 20px 12px;
+  padding: 16px 20px 14px;
   background: var(--white);
   border-bottom: 1px solid var(--border);
 }
 .day-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;
-  border-radius: 6px; padding: 4px 10px; margin-bottom: 10px;
+  display: inline-block;
+  font-size: 0.5625rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px;
+  color: var(--ink-3); margin-bottom: 8px;
 }
-.day-banner h2 { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.15; }
-.day-banner p { font-size: 0.82rem; color: var(--ink-3); margin-top: 4px; }
+.day-banner h2 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.8px; line-height: 1.15; }
+.day-banner p { font-size: 0.75rem; color: var(--ink-3); margin-top: 4px; }
 
-/* Day accent colors */
-.accent-amber .day-badge { background: var(--amber-bg); color: var(--amber); }
-.accent-coral .day-badge { background: var(--coral-bg); color: var(--coral); }
-.accent-violet .day-badge { background: var(--violet-bg); color: var(--violet); }
-.accent-teal   .day-badge { background: var(--teal-bg);   color: var(--teal); }
-.accent-emerald .day-badge { background: var(--emerald-bg); color: var(--emerald); }
+/* Day accent colors — just text color now */
+.accent-amber .day-badge  { color: var(--amber); }
+.accent-coral .day-badge  { color: var(--coral); }
+.accent-violet .day-badge { color: var(--violet); }
+.accent-teal   .day-badge { color: var(--teal); }
+.accent-emerald .day-badge { color: var(--emerald); }
 
 /* ============================================================
    MAP
    ============================================================ */
 .map-wrap { height: 200px; width: 100%; border-bottom: 1px solid var(--border); }
+.mapboxgl-canvas { outline: none; }
 
 /* ============================================================
    SECTION LABEL
    ============================================================ */
 .sec-label {
-  font-size: 0.65rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px;
+  font-size: 0.625rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px;
   color: var(--ink-3); padding: 14px 20px 8px;
 }
 
 /* ============================================================
-   TIMELINE
+   TIMELINE — Brut (cards)
    ============================================================ */
-.timeline { padding: 0 20px; }
+.timeline {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px;
+}
 .tslot {
-  display: grid; grid-template-columns: 56px 1px 1fr;
-  gap: 0 14px; padding-bottom: 14px;
+  display: flex; flex-direction: column; gap: 5px;
+  background: var(--white); border-radius: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--ink);
 }
-.tslot:last-child { padding-bottom: 0; }
-.t-time {
-  font-size: 0.68rem; font-weight: 700; color: var(--ink-3);
-  text-align: right; padding-top: 3px; line-height: 1.3;
-  letter-spacing: 0.2px;
-}
-.t-line {
-  background: var(--border); border-radius: 1px; position: relative;
-}
-.t-line::before {
-  content: '';
-  position: absolute; top: 5px; left: 50%; transform: translateX(-50%);
-  width: 8px; height: 8px; border-radius: 50%;
-  border: 2px solid var(--white);
-  box-shadow: 0 0 0 2px currentColor;
-}
-.accent-amber  .t-line::before { color: var(--amber); }
-.accent-coral  .t-line::before { color: var(--coral); }
-.accent-violet .t-line::before { color: var(--violet); }
-.accent-teal   .t-line::before { color: var(--teal); }
-.accent-emerald .t-line::before { color: var(--emerald); }
+.accent-amber  .tslot { border-left-color: var(--amber); }
+.accent-coral  .tslot { border-left-color: var(--coral); }
+.accent-violet .tslot { border-left-color: var(--violet); }
+.accent-teal   .tslot { border-left-color: var(--teal); }
+.accent-emerald .tslot { border-left-color: var(--emerald); }
 
+.t-time {
+  font-size: 0.625rem; font-weight: 800; color: var(--ink-3);
+  text-transform: uppercase; letter-spacing: 1px;
+  line-height: 1.3;
+}
+.t-line { display: none; }
 .t-body { padding-top: 0; }
 .t-title {
-  font-size: 0.93rem; font-weight: 700; color: var(--ink);
-  line-height: 1.2; margin-bottom: 6px;
+  font-size: 0.9375rem; font-weight: 800; color: var(--ink);
+  line-height: 1.2; margin-bottom: 4px; letter-spacing: -0.3px;
 }
 .t-items { list-style: none; }
 .t-items li {
-  font-size: 0.8rem; color: var(--ink-2); line-height: 1.55;
-  padding: 1px 0 1px 16px; position: relative;
+  font-size: 0.75rem; color: var(--ink-2); line-height: 1.6;
+  padding: 1px 0 1px 0; position: relative;
 }
-.t-items li::before {
-  content: '·'; position: absolute; left: 4px;
-  color: var(--ink-3); font-size: 1rem; line-height: 1.2;
-}
+.t-items li::before { display: none; }
 .t-items li.sub {
-  padding-left: 28px; color: var(--ink-3); font-size: 0.76rem;
+  padding-left: 0; color: var(--ink-3); font-size: 0.6875rem;
 }
-.t-items li.sub::before { content: '↳'; left: 14px; font-size: 0.7rem; line-height: 1.55; }
-.t-items li.warn { color: var(--red); }
-.t-items li.warn::before { content: '!'; left: 5px; color: var(--red); font-weight: 900; font-size: 0.75rem; }
-.t-items li.tip { color: var(--emerald); }
-.t-items li.tip::before { content: '✦'; left: 3px; color: var(--emerald); font-size: 0.55rem; top: 5px; }
+.t-items li.sub::before { display: none; }
+.t-items li.warn { color: var(--red); font-weight: 600; font-size: 0.6875rem; }
+.t-items li.warn::before { display: none; }
+.t-items li.tip { color: var(--emerald); font-weight: 600; font-size: 0.6875rem; }
+.t-items li.tip::before { display: none; }
 strong, b { color: var(--ink); font-weight: 700; }
 
 /* ============================================================
@@ -209,7 +225,7 @@ strong, b { color: var(--ink); font-weight: 700; }
 .cards { padding: 0 16px; display: flex; flex-direction: column; gap: 8px; }
 .card {
   background: var(--white);
-  border-radius: 14px;
+  border-radius: 12px;
   padding: 11px 14px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
   border: 1px solid var(--border);
@@ -219,7 +235,6 @@ strong, b { color: var(--ink); font-weight: 700; }
   content: '';
   position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
   background: var(--amber);
-  border-radius: 0;
 }
 .card.coral::before  { background: var(--coral); }
 .card.violet::before { background: var(--violet); }
@@ -230,7 +245,7 @@ strong, b { color: var(--ink); font-weight: 700; }
 .card-top { display: flex; gap: 10px; align-items: flex-start; }
 .card-emoji { font-size: 1.3rem; line-height: 1; flex: 0 0 auto; margin-top: 1px; }
 .card-info { flex: 1; min-width: 0; }
-.card-name { font-size: 0.9rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.card-name { font-size: 0.875rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
 .card-name-link { color: inherit; text-decoration: none; border-bottom: 1.5px solid rgba(0,0,0,0.18); }
 .card-name-link:active { opacity: 0.6; }
 .place-ref {
@@ -288,7 +303,7 @@ strong, b { color: var(--ink); font-weight: 700; }
 .tog:active { transform: scale(0.92); }
 
 /* ── MAP POPUP ── */
-.mp { font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-width: 160px; }
+.mp { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; min-width: 160px; }
 .mp-name { font-weight: 800; font-size: 13px; color: #0D0D12; margin-bottom: 8px; line-height: 1.3; }
 .mp-links { display: flex; gap: 5px; }
 .mp-btn {
@@ -298,6 +313,10 @@ strong, b { color: var(--ink); font-weight: 700; }
   color: #0D0D12; text-decoration: none; display: block;
 }
 .mp-btn:active { background: #e8e7e3; }
+
+/* Mapbox popup overrides */
+.mapboxgl-popup-content { border-radius: 12px; padding: 14px; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.mapboxgl-popup-close-button { font-size: 18px; padding: 4px 8px; color: var(--ink-3); }
 
 /* ============================================================
    INFO BOXES
@@ -409,7 +428,7 @@ strong, b { color: var(--ink); font-weight: 700; }
    ============================================================ */
 .apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 16px; }
 .app-card {
-  background: var(--white); border-radius: 14px; padding: 14px;
+  background: var(--white); border-radius: 12px; padding: 14px;
   border: 1px solid var(--border); display: flex; flex-direction: column; gap: 6px;
 }
 .app-icon { font-size: 1.6rem; line-height: 1; }
@@ -445,7 +464,7 @@ strong, b { color: var(--ink); font-weight: 700; }
 .trip-grid { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 400px; }
 .trip-card {
   display: flex; align-items: center; gap: 12px;
-  background: var(--white); border-radius: 14px; padding: 16px 16px 16px 20px;
+  background: var(--white); border-radius: 12px; padding: 16px 16px 16px 20px;
   border: 1px solid var(--border);
   box-shadow: 0 1px 3px rgba(0,0,0,0.06);
   color: var(--ink);
