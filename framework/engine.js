@@ -283,7 +283,13 @@ function renderDayPage(page, pageIndex) {
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '">';
   html += renderBanner(page.banner);
   html += '<div class="map-wrap" id="map' + pageIndex + '"></div>';
+  if (page.preTimeline) {
+    page.preTimeline.forEach(function(section) { html += renderSection(section); });
+  }
   html += renderTimeline(page.timeline, page.banner ? page.banner.accent : '');
+  if (page.postTimeline) {
+    page.postTimeline.forEach(function(section) { html += renderSection(section); });
+  }
   html += renderRainPlans(page.rainPlans);
   html += '</div>';
   return html;
@@ -430,6 +436,8 @@ var curPage = 0;
 var pagesWrap;
 var mapsLoaded = {};
 var TOTAL_PAGES = 0;
+var pageScroll = {};
+var _skipScroll = false;
 
 /* ── Scroll helper — iOS Safari needs rAF + setTimeout ── */
 
@@ -456,11 +464,22 @@ function showPage(n, animate, isSwipe) {
   var tabs = document.querySelectorAll('.tab');
   tabs.forEach(function(t, i) { t.classList.toggle('active', i === n); });
 
+  // Save scroll position of current page before leaving
+  pageScroll[curPage] = window.scrollY;
+
   var oldPage = curPage;
   curPage = n;
 
+  var shouldRestore = _skipScroll;
+  _skipScroll = false;
+
   // Direction class for View Transitions
   document.documentElement.classList.toggle('nav-back', n < oldPage);
+
+  function handleScroll(isMap) {
+    if (shouldRestore && !isMap) return; // bottom bar handles scroll
+    scrollPastHero(isMap);
+  }
 
   function applyPageChange() {
     var fullmapIdx = getFullmapPageIndex();
@@ -472,7 +491,7 @@ function showPage(n, animate, isSwipe) {
     }
 
     document.querySelector('.hero').classList.toggle('map-mode', isMap);
-    scrollPastHero(isMap);
+    handleScroll(isMap);
     document.body.classList.toggle('fullmap-mode', isMap);
 
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
@@ -497,7 +516,7 @@ function showPage(n, animate, isSwipe) {
     pagesWrap.style.transform = 'translateX(' + (-n * 100) + 'vw)';
 
     document.querySelector('.hero').classList.toggle('map-mode', isMap);
-    scrollPastHero(isMap);
+    handleScroll(isMap);
     document.body.classList.toggle('fullmap-mode', isMap);
     if (!mapsLoaded[n]) { initMap(n); mapsLoaded[n] = true; }
     if (isMap && mapState.map) {
@@ -508,6 +527,7 @@ function showPage(n, animate, isSwipe) {
   }
 
   if (tabs[n]) tabs[n].scrollIntoView({ inline: 'center', behavior: 'smooth', block: 'nearest' });
+  bbUpdateActive(n);
 }
 
 /* ── Zone filter ── */
@@ -760,6 +780,67 @@ function initKeyboard() {
   });
 }
 
+/* ── Bottom bar — terrain shortcuts ── */
+
+function getTodayDayNumber() {
+  if (!TRIP.meta.startDate) return 1;
+  var start = new Date(TRIP.meta.startDate + 'T00:00:00');
+  var now = new Date();
+  var diff = Math.floor((now - start) / 86400000) + 1;
+  var dayPages = TRIP.pages.filter(function(p) { return p.type === 'day'; });
+  if (diff < 1) return dayPages.length > 0 ? dayPages[0].dayNumber : 1;
+  if (diff > dayPages.length) return dayPages.length > 0 ? dayPages[dayPages.length - 1].dayNumber : 1;
+  return diff;
+}
+
+function getDayPageIndex(dayNumber) {
+  return TRIP.pages.findIndex(function(p) { return p.type === 'day' && p.dayNumber === dayNumber; });
+}
+
+var bbCurrentDay = 1;
+
+function renderBottomBar() {
+  var dayPages = TRIP.pages.filter(function(p) { return p.type === 'day'; });
+  if (dayPages.length === 0) return '';
+  bbCurrentDay = getTodayDayNumber();
+  var html = '<div class="bottom-bar">';
+  html += '<button class="bb-btn" id="bb-jour" onclick="bbGoJour()">📋 J' + bbCurrentDay + '</button>';
+  html += '<button class="bb-btn" id="bb-carte" onclick="bbGoCarte()">🗺 Carte</button>';
+  html += '<button class="bb-btn" id="bb-addr" onclick="bbGoAddr()">🍽 Adresses</button>';
+  html += '</div>';
+  return html;
+}
+
+function bbUpdateActive(pageIdx) {
+  var dayIdx = getDayPageIndex(bbCurrentDay);
+  var mapIdx = getFullmapPageIndex();
+  var addrIdx = getAddressesPageIndex();
+  var bj = document.getElementById('bb-jour');
+  var bc = document.getElementById('bb-carte');
+  var ba = document.getElementById('bb-addr');
+  if (bj) bj.classList.toggle('active', pageIdx === dayIdx);
+  if (bc) bc.classList.toggle('active', pageIdx === mapIdx);
+  if (ba) ba.classList.toggle('active', pageIdx === addrIdx);
+}
+
+function bbNav(idx) {
+  if (idx < 0) return;
+  pageScroll[curPage] = window.scrollY;
+  _skipScroll = true;
+  showPage(idx);
+  var y = pageScroll[idx];
+  if (y !== undefined) {
+    var go = function() { window.scrollTo(0, y); };
+    go();
+    requestAnimationFrame(go);
+    setTimeout(go, 80);
+    setTimeout(go, 200);
+  }
+}
+function bbGoJour() { bbNav(getDayPageIndex(bbCurrentDay)); }
+function bbGoCarte() { bbNav(getFullmapPageIndex()); }
+function bbGoAddr() { bbNav(getAddressesPageIndex()); }
+
 /* ── Main init ── */
 
 window.addEventListener('load', function() {
@@ -768,6 +849,15 @@ window.addEventListener('load', function() {
 
   var pagesHtml = TRIP.pages.map(function(page, i) { return renderPage(page, i); }).join('');
   app.innerHTML += '<div class="pages-outer"><div class="pages-wrap">' + pagesHtml + '</div></div>';
+
+  // Bottom bar
+  var hasDays = TRIP.pages.some(function(p) { return p.type === 'day'; });
+  if (hasDays) {
+    app.insertAdjacentHTML('beforeend', renderBottomBar());
+    document.body.classList.add('has-bottom-bar');
+    var bb = document.querySelector('.bottom-bar');
+    if (bb) document.documentElement.style.setProperty('--bb-h', bb.offsetHeight + 'px');
+  }
 
   document.title = TRIP.meta.flag + ' ' + TRIP.meta.title;
 

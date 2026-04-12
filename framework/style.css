@@ -168,6 +168,7 @@ body.fullmap-mode .page { overflow: hidden; }
    ============================================================ */
 .map-wrap { height: 200px; width: 100%; border-bottom: 1px solid var(--border); }
 #map-full { height: calc(100dvh - var(--tabs-h, 45px)); width: 100%; }
+.has-bottom-bar #map-full { height: calc(100dvh - var(--tabs-h, 45px) - var(--bb-h, 56px)); }
 .maplibregl-canvas { outline: none; }
 
 /* ============================================================
@@ -460,6 +461,42 @@ strong, b { color: var(--ink); font-weight: 700; }
 }
 .card-warn-note::before { content: '⚠'; font-size: 0.7rem; margin-top: 2px; }
 .card.pink::before { background: #EC4899; }
+
+/* ============================================================
+   BOTTOM BAR — Terrain shortcuts
+   ============================================================ */
+.bottom-bar {
+  position: fixed; bottom: calc(12px + env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%);
+  z-index: 300;
+  display: flex; gap: 6px;
+  padding: 8px 12px;
+  background: rgba(13,13,18,0.85); backdrop-filter: blur(16px);
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.bb-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 9px 18px; border-radius: 30px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7); font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.3px; cursor: pointer;
+  transition: background 0.15s, color 0.15s, transform 0.1s;
+  -webkit-tap-highlight-color: transparent;
+  font-family: inherit;
+}
+.bb-btn.active {
+  background: var(--amber); color: var(--ink);
+  border-color: var(--amber);
+}
+.bb-btn:active { transform: scale(0.94); }
+/* Add bottom padding to pages so content isn't hidden behind the bar */
+.has-bottom-bar .page { padding-bottom: 80px; }
+/* In fullmap mode, bar stays visible */
+/* Hide on desktop */
+@media (min-width: 768px) {
+  .bottom-bar { display: none; }
+}
 
 /* ============================================================
    LANDING PAGE

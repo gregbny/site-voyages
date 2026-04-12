@@ -13,8 +13,9 @@ const TRIP = {
     ],
     people: ["Greg", "Sofie"],
     personTag: "♥",
-    mapCenter: [51.508, -0.130],
-    mapZoom: 12
+    mapCenter: [51.512, -0.150],
+    mapZoom: 12,
+    startDate: "2026-04-27"
   },
 
   pages: [
@@ -25,53 +26,68 @@ const TRIP = {
       id: "avant",
       tab: "✈️ Avant",
       type: "custom",
-      banner: { accent: "amber", badge: "Avant le départ", title: "Logistique & Préparation", sub: "Documents, apps, stratégie transport" },
+      banner: { accent: "amber", badge: "Avant le départ", title: "Logistique & Préparation", sub: "Philosophie, adresses, transport, apps" },
       sections: [
+        { type: "label", text: "🎯 L'esprit du voyage" },
+        { type: "infobox", color: "emerald", title: "Léger · Familial · Économique", items: [
+          "Pas de grosses attractions payantes (Tour, Eye, musées chers). Un seul musée : le <b>Natural History Museum</b>, gratuit.",
+          "<b>Parcs et balades</b> en priorité : Hyde Park, Holland Park, parcours Notting Hill, Brick Lane/Shoreditch.",
+          "<b>Soirées flexibles</b> : pas de dîner fixe planifié. On décide chaque soir selon météo et fatigue — typiquement 1 soir pub + 2 soirs hôtel (takeaway / M&S).",
+          "<b>J2 et J3 interchangeables</b> selon la météo."
+        ]},
+
         { type: "label", text: "📍 Adresses clés" },
         { type: "cards", items: [
-          { emoji: "🏨", name: "Thistle London Hyde Park", addr: "104 Bayswater Road, W2 3HL", color: "amber", body: "Métro : Bayswater ou Queensway (2 min à pied). Paddington à 15 min.", mapsQuery: "104+Bayswater+Road+London+W2+3HL" },
-          { emoji: "🚂", name: "St Pancras International", addr: "Euston Road, London N1C 4QP", color: "neutral", body: "Terminus Eurostar. WC gratuits niveau bas. Taxi file officielle sur Midland Road.", mapsQuery: "St+Pancras+International+Euston+Road+London+N1C+4QP" }
+          { emoji: "🏨", name: "Thistle London Hyde Park", addr: "104 Bayswater Road, W2 3HL", color: "amber", body: "Métro : Bayswater ou Queensway (2 min à pied). Petit-déj inclus. Frigo en chambre (pas de micro-ondes). 2 chambres reliées + salle de bain.", mapsQuery: "Thistle+Hyde+Park+104+Bayswater+Road+London+W2+3HL" },
+          { emoji: "🚂", name: "St Pancras International", addr: "Euston Road, London N1C 4QP", color: "neutral", body: "Terminus Eurostar. WC gratuits niveau bas. File taxi officielle sur Midland Road.", mapsQuery: "St+Pancras+International+Euston+Road+London+N1C+4QP" }
         ]},
+
         { type: "label", text: "🚨 À faire maintenant" },
-        { type: "infobox", color: "red", title: "Checklist obligatoire", items: [
-          "<b>ETA</b> — Electronic Travel Authorisation, ~10£, en ligne, 1 mois avant. Obligatoire pour les Européens en 2026.",
-          "<b>Passeports</b> — Valides après le 30 Avril. PAS de Carte d'Identité.",
-          "<b>CEAM</b> — Carte Européenne d'Assurance Maladie valide."
+        { type: "infoboxGroup", items: [
+          { color: "red", title: "Obligatoire avant le départ", items: [
+            "<b>ETA</b> — Electronic Travel Authorisation, ~10£, en ligne, au moins 1 mois avant. Obligatoire pour les Européens depuis 2025.",
+            "<b>Passeports</b> — valides après le 30 avril. PAS de Carte d'Identité.",
+            "<b>CEAM</b> — Carte Européenne d'Assurance Maladie valide pour chacun."
+          ]},
+          { color: "amber", title: "Réservation NHM — J2", items: [
+            "Entrée gratuite mais <b>créneau à réserver en ligne</b> sur <a href=\"https://www.nhm.ac.uk/visit.html\" target=\"_blank\">nhm.ac.uk/visit</a>.",
+            "Viser un créneau vers <b>10h30</b> (petit-déj hôtel pas trop long) ou <b>11h</b> (pour souffler).",
+            "Horaires : 10h00–17h50 · dernière entrée 17h30."
+          ]}
         ]},
+
         { type: "label", text: "📱 Apps à installer" },
         { type: "apps", items: [
-          { icon: "🗺", name: "Citymapper", desc: "10× plus précis que Google Maps pour les bus et sorties de métro exactes.", tag: "must", tagLabel: "Indispensable" },
-          { icon: "🚽", name: "Toilets4London", desc: "Localise les WC gratuits. Vital avec des jumeaux de 7 ans.", tag: "must", tagLabel: "Indispensable" },
+          { icon: "🗺", name: "Citymapper", desc: "10× plus précis que Google Maps pour les bus et sorties de métro exactes. Indispensable.", tag: "must", tagLabel: "Indispensable" },
+          { icon: "🚽", name: "Toilets4London", desc: "Localise les WC gratuits. Vital avec des enfants de 7 ans.", tag: "must", tagLabel: "Indispensable" },
           { icon: "🚕", name: "Bolt", desc: "Souvent moins cher qu'Uber à Londres.", tag: "nice", tagLabel: "Recommandé" },
-          { icon: "💳", name: "Revolut / N26", desc: "Payer en livres sans frais de change. Configurer avant.", tag: "nice", tagLabel: "Recommandé" }
+          { icon: "💳", name: "Revolut / N26", desc: "Payer en livres sans frais de change. À configurer avant.", tag: "nice", tagLabel: "Recommandé" }
         ]},
+
         { type: "divider" },
+
         { type: "label", text: "🚇 Transport — la règle d'or" },
         { type: "infoboxGroup", items: [
           { color: "red", title: "PAS d'Oyster Card", items: ["Obsolète. 7£ de caution non remboursable. N'achetez pas."] },
           { color: "green", title: "Ce qu'il faut faire", items: [
-            "Carte bancaire sans contact ou Apple/Google Pay directement sur les portiques.",
-            "Chaque adulte garde <b>toujours la même carte</b> → \"Daily Cap\" (plafond journalier automatique).",
-            "Enfants 7 ans : <b>GRATUITS</b> sur bus & métro avec un adulte payant. Portiques larges ensemble."
+            "Carte bancaire sans contact (ou Apple/Google Pay) directement sur les portiques.",
+            "Chaque adulte garde <b>toujours la même carte</b> → \"Daily Cap\" (plafond journalier automatique à ~8.90£).",
+            "Enfants 7 ans : <b>GRATUITS</b> sur bus & métro avec un adulte payant. Passez les portiques larges ensemble."
+          ]},
+          { color: "teal", title: "Bus à l'étage = manège gratuit", items: [
+            "Dès que possible, préférez le bus rouge à étage au métro. Montez à l'étage, tout devant — les enfants adorent.",
+            "Ligne <b>94</b> (Bayswater Rd → Oxford St → Piccadilly) : top pour rentrer à l'hôtel depuis le centre."
           ]}
         ]},
+
         { type: "divider" },
-        { type: "label", text: "💡 Suggestions & Réflexions" },
-        { type: "infoboxGroup", items: [
-          { color: "amber", title: "J2 est surchargé — à alléger", items: [
-            "NHM + Science Museum + London Eye + South Bank + Covent Garden en un jour avec des jumeaux de 7 ans = épuisement garanti à 16h.",
-            "<b>Suggestion :</b> Choisir NHM <i>ou</i> Science Museum (pas les deux), et garder le London Eye pour un autre jour ou le supprimer. L'Eye coûte ~110£ et la queue est longue — la vue depuis la Tate Modern Switch House (7ème étage, gratuit) est presque aussi belle."
-          ]},
-          { color: "amber", title: "Tour de Londres — à questionner", items: [
-            "~95£ pour la famille, très dense, beaucoup de marche. Si vous réduisez les grosses activités payantes, c'est la première à sauter.",
-            "<b>Alternative gratuite :</b> Vue extérieure du Tower Bridge + marche le long de la Tamise = 90% du plaisir visuel pour 0£. Le <b>Young V&A</b> (Bethnal Green, gratuit) est bien plus adapté aux enfants de 7 ans."
-          ]},
-          { color: "teal", title: "Idée : une demi-journée \"Shopping Adultes\"", items: [
-            "Sofie a de nombreux spots shopping (UNIQLO, MUJI, Rokit×2, Choosing Keeping, Moomin Shop, Neal's Yard...). Prévoir un créneau J4 matin sans musée pour en profiter à Covent Garden / Carnaby Street."
-          ]},
-          { color: "red", title: "⚠ Columbia Road Flower Market", items: [
-            "Sofie l'a sur sa carte mais ce marché est <b>ouvert dimanche uniquement</b>. Votre séjour est lundi-jeudi — c'est raté. À prévoir pour un prochain voyage !"
-          ]}
+
+        { type: "label", text: "🛒 Courses & stratégie soirées" },
+        { type: "infobox", color: "amber", title: "Plan provisions", items: [
+          "<b>Waitrose Queensway</b> (2 min de l'hôtel) : le plus pratique pour un premier ravitaillement en arrivant — snacks, yaourts, cocas, chocolat, pâtisseries pour le frigo.",
+          "<b>M&S Foodhall Notting Hill Gate</b> : meilleure qualité, ~8 min de l'hôtel, à faire <b>au retour</b> de la balade J1 (pas au début).",
+          "<b>Répartition type sur 3 soirs</b> : 1 soir pub (pinte + frites pour l'ambiance) + 2 soirs hôtel (fish & chips à emporter ou pique-nique M&S/Waitrose). On décide chaque soir.",
+          "Budget dîners estimé : <b>~£80–120 sur 3 soirs</b> (vs ~£300 en restos)."
         ]}
       ]
     },
@@ -84,7 +100,13 @@ const TRIP = {
       tab: "Lundi J1",
       type: "day",
       dayNumber: 1,
-      banner: { accent: "amber", badge: "Jour 1 · Lundi 27 Avril", title: "L'Arrivée & Notting Hill", sub: "St Pancras → Hôtel → Portobello Road → Churchill Arms" },
+      banner: { accent: "amber", badge: "Jour 1 · Lundi 27 Avril", title: "Arrivée & Notting Hill", sub: "St Pancras → Hôtel → Farm Girl → Parcours photo → Hyde Park" },
+      preTimeline: [
+        { type: "infobox", color: "teal", title: "🚇 Transport du jour", items: [
+          "<b>St Pancras → Hôtel</b> : Black Cab file officielle (Midland Road) · ~25–30£ · 25 min. Recommandé avec valises.",
+          "<b>Reste de la journée</b> : tout à pied. Boucle naturelle hôtel → Notting Hill → Hyde Park → hôtel."
+        ]}
+      ],
       timeline: [
         {
           time: "11h30\n12h30",
@@ -92,44 +114,54 @@ const TRIP = {
           items: [
             { text: "Arrivée Eurostar → suivre \"Way Out\"." },
             { text: "WC gratuits dans la galerie marchande (niveau bas) avant de sortir.", type: "tip" },
-            { text: "<b>Taxi :</b> File Black Cab officielle (Midland Road). ~25-30£, 25 min. Recommandé J1 avec valises." },
-            { text: "Métro possible : Piccadilly Line → South Ken → Circle → Bayswater. Déconseillé avec bagages.", type: "sub" }
+            { text: "Taxi Black Cab — file officielle Midland Road. Ne pas prendre les rabatteurs à l'intérieur de la gare.", type: "sub" }
           ]
         },
         {
           time: "13h00\n14h30",
-          title: "🥞 Déjeuner Brunch",
+          title: "🥞 Déjeuner — Farm Girl",
           items: [
-            { text: "<b>Farm Girl</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-farm-girl');return false\">↗ Adresses</a> · 59A Portobello Rd · \"Island Pancakes\" sarrasin/coco · ~70£ pour 4." },
-            { text: "Plan B : Eggbreak (30 Uxbridge St) si >20 min d'attente.", type: "sub" }
+            { text: "<b>Farm Girl</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-farm-girl');return false\">↗ Adresses</a> · 59A Portobello Rd. Un lundi midi hors vacances scolaires anglaises = peu de monde attendu." },
+            { text: "Spécialité : Island Pancakes sarrasin/coco, brunch coloré, bons pour les enfants. ~70£ pour 4." },
+            { text: "Plan B si plein : Eggbreak (30 Uxbridge St), 4 min à pied.", type: "sub" }
           ]
         },
         {
           time: "14h30\n16h30",
-          title: "📸 Portobello — l'itinéraire photo",
+          title: "📸 Parcours Notting Hill — les spots de Sofie",
           items: [
-            { text: "Angle <b>Chepstow Villas/Portobello Rd</b> → Denbigh Terrace → remonter Portobello → <b>Lancaster Road</b> (maisons violettes) → St Luke's Mews (Love Actually).", type: "tip" },
-            { text: "🎯 Mission enfants : \"Compter les maisons roses\" — le gagnant choisit la glace." },
-            { text: "Snack : <b>Buns From Home</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-buns-from-home');return false\">↗ Adresses</a> (128 Talbot Rd) · brioches cannelle/chocolat feuilletées." }
+            { text: "<b>Point of view</b> (haut de Portobello) → <b>Colville Terrace</b> → <b>Colville Square Gardens</b> → <b>Saint Lukes Mews</b> (Love Actually) → <b>Westbourne Grove</b> puis redescente vers l'hôtel.", type: "tip" },
+            { text: "🎯 <b>Mission enfants</b> : chacun choisit une couleur de maison (rose, bleu, jaune, violet). On prend une photo de chaque trouvaille. Le gagnant choisit la glace du soir." },
+            { text: "Goûter : <b>Buns From Home</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-buns-from-home');return false\">↗ Adresses</a> · 128 Talbot Rd · brioches cannelle/chocolat feuilletées à emporter. 4 brioches = goûter royal pour ~15£." },
+            { text: "Ouvrir l'œil sur les pubs/restos du chemin — pour décider du dîner le soir même.", type: "sub" },
+            { text: "Lundi = <b>pas de marché Portobello</b> (fermé en semaine). Les boutiques sont ouvertes, pas les stands.", type: "warn" }
           ]
         },
         {
           time: "16h30\n18h30",
-          title: "🏴‍☠️ Diana Memorial Playground",
+          title: "🌳 Hyde Park — le gros morceau juste sous l'hôtel",
           items: [
-            { text: "Entrée ultra-surveillée (on ne rentre pas sans enfant). Café parents à l'intérieur." },
-            { text: "Plan pluie : Science Museum (ouvert jusqu'à 18h).", type: "warn" }
+            { text: "Entrée par <b>Lancaster Gate</b> ou <b>Black Lion Gate</b>. On se pose dans l'herbe, on cherche les écureuils (ultra apprivoisés), on goûte." },
+            { text: "Boucle possible : Italian Gardens → Long Water → Serpentine. Pas d'objectif, juste décompresser après le voyage.", type: "tip" },
+            { text: "Diana Memorial Playground → <b>retiré</b> (était fermé/mort aux derniers essais).", type: "sub" }
           ]
         },
         {
-          time: "19h00",
-          title: "🌸 Dîner — The Churchill Arms <a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-the-churchill-arms');return false\">↗ Adresses</a>",
+          time: "18h30\n19h00",
+          title: "🛒 Waitrose Queensway — provisions",
           items: [
-            { text: "119 Kensington Church St · pub fleuri, cuisine thaïlandaise · ~80£." },
-            { text: "Demander \"Pad Thai for kids\" (non épicé).", type: "sub" },
-            { text: "Plan B (fatigue) : Pizza Express ou Uber Eats hôtel.", type: "sub" }
+            { text: "Sur le chemin retour : 98-101 Queensway, 2 min de l'hôtel. Remplir le frigo de la chambre (yaourts, cocas, snacks, chocolat, pâtisseries).", type: "tip" },
+            { text: "Sofie aime les épices/avocats de chez Waitrose — et c'est nettement plus proche que le M&S de Notting Hill Gate.", type: "sub" }
           ]
         }
+      ],
+      postTimeline: [
+        { type: "infobox", color: "violet", title: "🌙 Soir J1 — options dîner (au feeling)", items: [
+          "<b>Fatigue post-voyage</b> → pique-nique hôtel avec les courses Waitrose + fish & chips à emporter de <b>Hobson's</b> (9 Porchester Rd, 5 min). Option recommandée ce soir-là.",
+          "<b>Envie de sortir</b> → <b>The Champion</b> (1 Wellington Terrace, face aux Kensington Gardens) · pub traditionnel 1838, pinte + frites, ambiance authentique, ~5 min de l'hôtel.",
+          "<b>Solution facile kids-friendly</b> → Queensway à 3 min : Pizza Pilgrims, Five Guys, Nando's, Taza Kebab. Pas romantique mais efficace.",
+          "<i>Repéré pendant la balade de l'après-midi ? On en reparle.</i>"
+        ]}
       ]
     },
 
@@ -141,66 +173,60 @@ const TRIP = {
       tab: "Mardi J2",
       type: "day",
       dayNumber: 2,
-      banner: { accent: "coral", badge: "Jour 2 · Mardi 28 Avril", title: "Dinosaures & Roue Géante", sub: "South Ken → London Eye → South Bank → Covent Garden" },
+      banner: { accent: "coral", badge: "Jour 2 · Mardi 28 Avril", title: "Dinosaures & Covent Garden", sub: "NHM → Shake Shack → Chinatown → shopping Covent" },
+      preTimeline: [
+        { type: "infobox", color: "teal", title: "🚇 Transport du jour", items: [
+          "<b>Hôtel → NHM</b> : métro <b>Circle line</b> direct, Bayswater → South Kensington (4 stations, ~8 min, zéro changement). Sortie Exhibition Road.",
+          "<b>NHM → Covent Garden</b> : métro <b>Piccadilly line</b> direct, South Kensington → Covent Garden (4 stations, ~11 min).",
+          "<b>Retour Covent Garden → Hôtel</b> : <b>bus 94 à l'étage</b> depuis Piccadilly Circus / Oxford Street → Notting Hill Gate. C'est le manège gratuit du jour.",
+          "J2 / J3 <b>interchangeables</b> selon météo — le NHM fonctionne par tous les temps, donc à basculer si pluie annoncée."
+        ]}
+      ],
       timeline: [
         {
-          time: "08h30",
-          title: "☕ Petit-déj & Bus Panoramique",
+          time: "08h00\n09h30",
+          title: "☕ Petit-déj hôtel — attention au temps",
           items: [
-            { text: "Pret A Manger ou Costa près de l'hôtel." },
-            { text: "Bus 70 : monter à l'étage tout devant — manège gratuit !", type: "tip" }
+            { text: "Petit-déj inclus à l'hôtel. <b>Viser 45 min max</b> pour ne pas y passer la matinée.", type: "warn" },
+            { text: "Partir vers 9h30 pour viser le créneau NHM de 10h30." }
           ]
         },
         {
-          time: "09h45\n12h30",
+          time: "10h30\n12h30",
           title: "🦕 Natural History Museum",
           items: [
-            { text: "Entrée <b>Exhibition Road</b> (souvent vide) — pas Cromwell Rd !", type: "tip" },
-            { text: "Route : Zone Rouge (volcans) → Hall Hintze (baleine) → <b>Zone Bleue : Dinosaures</b> 🦖" },
-            { text: "Boutique dinos = piège. Fixez un budget avant d'entrer (\"un truc à 5£\").", type: "warn" }
+            { text: "<b>Entrée Exhibition Road</b> (souvent moins de monde que Cromwell Road).", type: "tip" },
+            { text: "Route conseillée : Hall Hintze (baleine au plafond) → Zone Bleue <b>Dinosaures</b> 🦖 (rex animatronique) → Zone Rouge (volcans, simulateur tremblement de terre) si buffer." },
+            { text: "Réservation gratuite à faire en ligne avant le départ — créneau garanti.", type: "sub" },
+            { text: "Boutique dinos = piège. Fixer un budget avant d'entrer (\"un truc à 5£\").", type: "warn" }
           ]
         },
         {
-          time: "12h30\n13h30",
-          title: "🥗 Déjeuner",
+          time: "12h45\n13h45",
+          title: "🍔 Déjeuner — Shake Shack Covent Garden",
           items: [
-            { text: "☀️ Beau temps : sandwichs Paul + jardin du V&A (bassin central)." },
-            { text: "🌧 Pluie : V&A Café (Gambling Room) — le plus beau café de musée au monde." }
+            { text: "Métro South Ken → Covent Garden (Piccadilly line, direct)." },
+            { text: "<b>Shake Shack</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-shake-shack-covent-garden');return false\">↗ Adresses</a> · 24 Market Building, sous la halle de Covent Garden. Burger + frites + milk-shake, valeur sûre famille. ~55£ pour 4." }
           ]
         },
         {
-          time: "13h30\n15h00",
-          title: "🔬 Science Museum — Wonderlab",
+          time: "13h45\n17h30",
+          title: "🏮 Covent Garden + Chinatown en mode balade",
           items: [
-            { text: "Monter direct au <b>Wonderlab: The Equinor Gallery</b> — pas le RDC.", type: "tip" },
-            { text: "Spectacles chimie, barres de friction, système solaire géant. Le spot le plus fun de Londres pour les enfants." }
-          ]
-        },
-        {
-          time: "15h00\n16h00",
-          title: "🎡 London Eye",
-          items: [
-            { text: "Métro South Ken → Westminster." },
-            { text: "Photo Big Ben + cabine rouge : sortie du métro, immédiatement à gauche.", type: "tip" },
-            { text: "WC AVANT de monter (County Hall) — aucune toilette dans les capsules !", type: "warn" },
-            { text: "Prévoir 20 min de queue de sécurité même avec billet." }
-          ]
-        },
-        {
-          time: "16h30\n18h30",
-          title: "🌊 Marche South Bank",
-          items: [
-            { text: "Skate Park sous le pont → Gabriel's Wharf → Tate Modern (Turbine Hall gratuit)." }
-          ]
-        },
-        {
-          time: "19h00",
-          title: "🍱 Dîner — Seven Dials Market <a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-seven-dials-market');return false\">↗ Adresses</a>",
-          items: [
-            { text: "Traversée Millennium Bridge (Harry Potter) → Bus 15 → Covent Garden." },
-            { text: "<b>Seven Dials Market</b> (35 Earlham St) · food court entrepôt de bananes · ~15-20£/pers. Anti-dispute : chacun choisit." }
+            { text: "<b>Neal's Yard</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-neal-s-yard');return false\">↗ Adresses</a> — petite cour cachée, murs peints pastel. Le spot photo que 90% des touristes ratent.", type: "tip" },
+            { text: "<b>Chinatown</b> (5 min à pied vers Leicester Square) — vitrines avec canards laqués suspendus, porte de la Terre Céleste, boutiques asiatiques. Rigolo pour les enfants, gratuit, photogénique." },
+            { text: "<b>Shopping en boucle autour de Covent</b> : UNIQLO (rouvert il y a 3 semaines, énorme), MUJI, Moomin Shop, Choosing Keeping (papeterie), Boots, ARKET. Tout en 10 min à pied.", type: "sub" },
+            { text: "<b>St Martin's Courtyard</b> + <b>Seven Dials</b> : petites rues, concept stores. Bien pour décompresser entre deux boutiques." },
+            { text: "🟡 <b>Option si gros buffer</b> : London Transport Museum (Covent Garden Piazza) — adultes £24.50, enfants gratuits. Playzone enfants, vieux bus/trams, simulateur. ~2h. Cher pour 2 adultes mais adoré des enfants de 7 ans.", type: "sub" }
           ]
         }
+      ],
+      postTimeline: [
+        { type: "infobox", color: "violet", title: "🌙 Soir J2 — options dîner", items: [
+          "<b>Option pub ambiance</b> → <b>The Champion</b> (proche hôtel) · pinte + barquette de frites pour l'ambiance, puis on rentre grignoter au frigo. C'est le soir idéal pour faire ça (retour du centre, pas trop tard).",
+          "<b>Option hôtel</b> → takeaway <b>Hobson's Fish & Chips</b> (9 Porchester Rd) ou <b>Pizza Pilgrims</b> Queensway.",
+          "<b>Option \"on a trop traîné au centre\"</b> → manger à Chinatown sur place (ramen, dim sum) avant de rentrer en bus 94."
+        ]}
       ]
     },
 
@@ -212,50 +238,72 @@ const TRIP = {
       tab: "Mercredi J3",
       type: "day",
       dayNumber: 3,
-      banner: { accent: "violet", badge: "Jour 3 · Mercredi 29 Avril", title: "Momies, Couronne & Hipsters", sub: "British Museum → Tour de Londres → Brick Lane" },
+      banner: { accent: "violet", badge: "Jour 3 · Mercredi 29 Avril", title: "Holland Park & Brick Lane", sub: "Kyoto Garden → Playground → Spitalfields → Brick Lane" },
+      preTimeline: [
+        { type: "infobox", color: "teal", title: "🚇 Transport du jour", items: [
+          "<b>Hôtel → Holland Park</b> : <b>à pied</b>, ~1,6 km / 20 min, balade agréable dans un quartier arboré. (Alt. métro : Bayswater → Holland Park, Circle line, 1 station, 5 min.)",
+          "<b>Holland Park → Brick Lane</b> : métro <b>Central line</b> direct, Holland Park → Liverpool Street (~20 min), puis 8 min à pied vers le nord via Bishopsgate.",
+          "<b>Retour Brick Lane → Hôtel</b> : Liverpool Street → Bayswater en métro (Circle/Hammersmith, ~20 min)."
+        ]}
+      ],
       timeline: [
         {
-          time: "09h30\n11h30",
-          title: "🏛 British Museum — Commando",
+          time: "09h30\n12h00",
+          title: "🌿 Holland Park — Kyoto Garden & Playground",
           items: [
-            { text: "Éviter les gros sacs à dos (fouille)." },
-            { text: "Room 4 : Pierre de Rosette · Room 18 : Frises du Parthénon · Rooms 62-63 : <b>Les Momies</b> 😱" },
-            { text: "Sortie par la porte arrière (Montague Place) pour éviter la foule.", type: "tip" }
+            { text: "<b>Kyoto Garden</b> : jardin japonais, cascade, carpes koi, très joli en fin avril. Accès libre et gratuit.", type: "tip" },
+            { text: "<b>Holland Park Adventure Playground</b> : grande aire de jeux 5–14 ans, tyrolienne 25 m, mur d'escalade, bascule 10 places. Gratuit. Les enfants y sont occupés ~1h tranquille." },
+            { text: "Matinée sans pression : on laisse les enfants fatiguer leurs jambes pendant qu'on boit un café.", type: "sub" }
           ]
         },
         {
-          time: "12h00\n13h15",
-          title: "🍺 The Museum Tavern",
+          time: "12h00\n12h30",
+          title: "🏛 Design Museum — boutique (optionnel)",
           items: [
-            { text: "49 Great Russell St (en face) · pub victorien · Karl Marx y buvait · Fish & Chips · ~70£." }
+            { text: "Sortie sud de Holland Park, 224 Kensington High St. <b>Collection permanente et boutique gratuites</b> (pas d'expo payante)." },
+            { text: "Juste un passage si buffer : l'architecture intérieure et la boutique design valent le détour seules. ~20–30 min.", type: "sub" }
           ]
         },
         {
-          time: "13h30\n16h30",
-          title: "⚔️ Tour de Londres",
+          time: "13h00\n14h30",
+          title: "🥙 Déjeuner Brick Lane — freestyle",
           items: [
-            { text: "Métro Holborn → Bank → DLR Tower Gateway." },
-            { text: "Crown Jewels : si queue, divisez-vous (un parent + enfants → canons, swap)." },
-            { text: "🦅 Défi corbeaux : en trouver 6 (légende : s'ils partent, le royaume s'effondre)." }
+            { text: "Métro Central line direct depuis Holland Park jusqu'à Liverpool Street (~20 min), puis 8 min à pied." },
+            { text: "<b>Old Spitalfields Market</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-old-spitalfields-market');return false\">↗ Adresses</a> · marché couvert ouvert en semaine, tables communes, cafés et stands variés. <b>Plus \"assis\" et plus calme</b> que Brick Lane pour déjeuner avec les enfants. Le bon plan sit-down du J3.", type: "tip" },
+            { text: "Alternative : <b>118 The Lane</b> sur Brick Lane même, petit restaurant sit-down repéré par Sofie.", type: "sub" },
+            { text: "⚠ On évite le <b>Beigel Bake</b> en déjeuner principal (pas de tables, on mange debout). Gardé pour le goûter.", type: "warn" }
           ]
         },
         {
-          time: "16h30\n19h00",
-          title: "🎨 East End & Brick Lane",
+          time: "14h30\n18h00",
+          title: "🎨 Parcours Brick Lane / Shoreditch",
           items: [
-            { text: "Street art : grue de Roa (Hanbury St) + chercher les Space Invaders sur les murs." },
-            { text: "🥯 <b>Beigel Bake</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-beigel-bake');return false\">↗ Adresses</a> · 159 Brick Lane · enseigne <b>BLANCHE</b> (pas la jaune !) · Salt Beef mythique ~6£." },
-            { text: "🎵 <b>Rough Trade East</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-rough-trade-east');return false\">↗ Adresses</a> (Old Truman Brewery) · LE disquaire + photobooth vintage." }
+            { text: "Rues à voir (calmes en milieu de semaine) : <b>Fournier Street</b>, <b>Wilkes Street</b>, <b>Princelet Street</b>, <b>Brushfield Street</b>, <b>Redchurch Street</b>.", type: "tip" },
+            { text: "🎯 <b>Chasse aux Space Invaders</b> : chercher les pixel-art de l'artiste Invader planqués sur les murs. Les enfants en repèrent plus que les parents. Prendre 1 photo à chaque trouvaille." },
+            { text: "<b>Rough Trade East</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-rough-trade-east');return false\">↗ Adresses</a> · Old Truman Brewery · disquaire culte, photobooth vintage, café." },
+            { text: "<b>Rokit</b> (101 Brick Lane) · friperie vintage multi-étages." },
+            { text: "🥯 <b>Beigel Bake</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-beigel-bake');return false\">↗ Adresses</a> · 159 Brick Lane, enseigne <b>BLANCHE</b> (pas la jaune d'à côté) · bagel Salt Beef mythique ~6£ en <b>goûter</b>. Ouvert 24h/24." }
           ]
         },
         {
-          time: "19h30",
-          title: "🍛 Dîner — Dishoom <a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-dishoom-shoreditch');return false\">↗ Adresses</a>",
+          time: "18h00\n19h00",
+          title: "🍺 Apéro — 91 Brick Lane",
           items: [
-            { text: "<b>Dishoom Shoreditch</b> · 7 Boundary St · meilleur indien de Londres · Y aller à 17h30 ou réserver." },
-            { text: "Alternative : Masala Zone · family friendly · pas de queue.", type: "sub" }
+            { text: "<b>91 Brick Lane</b> (Old Truman Brewery) · terrasse extérieure, grandes tables en bois, petite cour abritée. Un verre tranquille pendant que les enfants courent.", type: "tip" },
+            { text: "Alternative café : <b>Brick Lane Coffee Shop</b>.", type: "sub" }
           ]
         }
+      ],
+      postTimeline: [
+        { type: "infobox", color: "violet", title: "🌙 Soir J3 — options dîner", items: [
+          "<b>Retour tardif et fatigue</b> → fish & chips à emporter <b>Hobson's</b> sur le chemin du retour (Queensway), manger à l'hôtel. Option recommandée ce soir-là.",
+          "<b>Courses M&S</b> → M&S Foodhall Notting Hill Gate si pas déjà fait J1, puis pique-nique hôtel.",
+          "<b>Si pub pas fait J2</b> → <b>The Champion</b> pour une pinte rapide avant de rentrer."
+        ]}
+      ],
+      rainPlans: [
+        { if: "Si gros orage toute la journée", then: "<b>Basculer J2 sur J3</b> : faire le NHM mercredi (intérieur), garder Holland Park + Brick Lane pour un jour sec. Les deux programmes sont interchangeables." },
+        { if: "Si averses en matinée seulement", then: "Retarder Holland Park l'après-midi, commencer par le <b>Design Museum</b> (intérieur, gratuit) puis enchaîner quand ça se lève." }
       ]
     },
 
@@ -267,38 +315,48 @@ const TRIP = {
       tab: "Jeudi J4",
       type: "day",
       dayNumber: 4,
-      banner: { accent: "teal", badge: "Jour 4 · Jeudi 30 Avril", title: "Bonus & Retour", sub: "King's Cross → Eurostar → Paris" },
+      banner: { accent: "teal", badge: "Jour 4 · Jeudi 30 Avril", title: "Courses & Retour", sub: "M&S Marble Arch → Boots → St Pancras → Eurostar 14h31" },
+      preTimeline: [
+        { type: "infobox", color: "teal", title: "🚇 Transport du jour", items: [
+          "<b>Hôtel → Marble Arch</b> : <b>à pied</b> ~15 min le long de Hyde Park (joli) ou métro Bayswater (Circle) → Paddington → bus 94. Les deux OK.",
+          "<b>Marble Arch → St Pancras</b> : métro Central line → Oxford Circus → Victoria line → King's Cross St Pancras (~15 min porte à porte).",
+          "<b>Train Eurostar : 14h31</b> ⚠ Arriver à St Pancras à 13h15 au plus tard."
+        ]}
+      ],
       timeline: [
         {
-          time: "09h00",
+          time: "09h00\n09h30",
           title: "🧳 Check-out",
           items: [
-            { text: "Laisser les bagages à la réception ou utiliser <b>Stasher.com</b> (consigne proche St Pancras)." }
+            { text: "Petit-déj une dernière fois, puis check-out. Laisser les bagages à la réception de l'hôtel pour la matinée." },
+            { text: "Alt. : <b>Stasher.com</b> (consigne à proximité de St Pancras) si on préfère déposer les valises directement près du train.", type: "sub" }
           ]
         },
         {
-          time: "10h30\n12h30",
-          title: "⚡ Quartier libre — au choix",
+          time: "09h30\n11h30",
+          title: "🛒 Matinée tranquille — M&S + Boots",
           items: [
-            { text: "🧙 <b>Harry Potter</b> — Platform 9¾ (King's Cross). Photo du panneau mural (gratuit) vs. queue photo pro (payante)." },
-            { text: "🐻 <b>Paddington</b> — Statue à la gare de Paddington. Bateau Little Venice → Camden (risqué pour le timing)." },
-            { text: "🛍 <b>Hamleys</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-hamleys');return false\">↗ Adresses</a> — Regent Street, 7 étages. ⚠ Crise de larmes garantie à la sortie." }
+            { text: "Direction <b>Marks & Spencer Marble Arch</b><a class=\"place-ref\" href=\"#\" onclick=\"goToPlace('place-m-s-marble-arch');return false\">↗ Adresses</a> · Oxford Street. Ramener de quoi manger dans le train (sandwiches, salades, biscuits) + souvenirs food (Yorkshire Tea, Digestives, Cadbury, Jaffa Cakes).", type: "tip" },
+            { text: "<b>Boots</b> à côté pour la parapharmacie (crèmes, cosmétiques UK intéressants, souvenirs pas chers)." },
+            { text: "Balade Oxford Street côté Marble Arch si envie — Primark Oxford St pour les souvenirs enfants à 2-5£ (t-shirts, chaussettes, pyjamas).", type: "sub" },
+            { text: "Éviter les grosses activités matin : train à 14h31, pas le temps. On reste léger.", type: "warn" }
           ]
         },
         {
-          time: "12h30\n13h30",
-          title: "🧀 Déjeuner — Coal Drops Yard",
+          time: "11h30\n13h00",
+          title: "🥪 Déjeuner + récup bagages",
           items: [
-            { text: "<b>Morty & Bob's</b> · Grilled Cheese sandwiches réconfortants avant le train." }
+            { text: "Retour à l'hôtel (bus 94 direct Oxford Street → Bayswater Rd), récupérer les bagages, déjeuner rapide à l'hôtel ou en Queensway." },
+            { text: "Alt. : déjeuner chez <b>Dishoom King's Cross</b> si envie de se faire plaisir avant le train — c'est juste à côté de St Pancras.", type: "sub" }
           ]
         },
         {
-          time: "13h45",
+          time: "13h00\n14h00",
           title: "🚨 St Pancras — Zone de Danger",
           items: [
-            { text: "Billets Eurostar sur papier ou téléphone chargé.", type: "warn" },
-            { text: "Douanes FR + UK : prévoir 45 min." },
-            { text: "Videz la petite monnaie dans les boîtes de charité ou achetez des chocolats." }
+            { text: "Arriver 1h15 avant le départ (13h15 au plus tard). Billets Eurostar sur téléphone chargé ou papier.", type: "warn" },
+            { text: "Douanes FR + UK : prévoir 45 min de marge." },
+            { text: "Vider la petite monnaie £ dans les boîtes de charité ou acheter des chocolats." }
           ]
         },
         {
@@ -310,9 +368,8 @@ const TRIP = {
         }
       ],
       rainPlans: [
-        { if: "Si prévu : Notting Hill", then: "<b>Westfield London</b> (Shepherd's Bush) — Lego Store + KidZania (ville miniature pour enfants, réserver à l'avance)." },
-        { if: "Si prévu : South Bank", then: "<b>Sea Life Aquarium</b> — juste à côté du London Eye, 100% intérieur." },
-        { if: "Si prévu : Tour de Londres", then: "<b>Museum of London Docklands</b> — gratuit, génial, zone \"Mudlarks\", moins de monde." }
+        { if: "Si on a plus de temps que prévu (plan backup)", then: "<b>Platform 9¾</b> (King's Cross) — panneau mural gratuit, photo famille · puis <b>Coal Drops Yard</b> pour un café (à 3 min à pied de St Pancras)." },
+        { if: "Si les enfants réclament de la féerie", then: "<b>Hamleys</b> (188 Regent St, 7 étages de jouets) — prévoir crise de larmes à la sortie ⚠. À faire uniquement si le timing train est confortable." }
       ]
     },
 
@@ -323,139 +380,142 @@ const TRIP = {
       id: "adresses",
       tab: "🍽 Adresses",
       type: "addresses",
-      banner: { accent: "emerald", badge: "Carnet d'Adresses", title: "Restos, Cafés & Shopping", sub: "£ <10£ · ££ 15-25£ · £££ >30£ par personne" },
+      banner: { accent: "emerald", badge: "Carnet d'Adresses", title: "Restos, cafés, parcs & shopping", sub: "£ <10£ · ££ 15-25£ · £££ >30£ par personne" },
       zones: [
         {
           label: "📍 J1 Notting Hill",
           sections: [
             {
-              label: "🍽 Manger — Jour 1",
+              label: "🍽 Manger & Boire",
               cards: [
-                { emoji: "🥞", name: "Farm Girl", addr: "59A Portobello Rd, W11 3DB", price: "££", color: "amber", body: "Brunch Instagram. Pancakes moelleux, lattés à la rose, avocado toast. Cadre coloré.", verdict: "Les enfants adorent les pancakes. Arriver avant 12h (pas de résa WE).", mapsQuery: "Farm+Girl+59A+Portobello+Rd+London" },
-                { emoji: "🍳", name: "Eggbreak", addr: "30 Uxbridge St", price: "££", color: "neutral", body: "Plan B si Farm Girl est plein. Spécialiste des œufs, très gourmand.", mapsQuery: "Eggbreak+30+Uxbridge+St+London" },
-                { emoji: "🌸", name: "The Churchill Arms", addr: "119 Kensington Church St", price: "££", color: "coral", body: "Pub le plus fleuri de Londres. Surprise : cuisine thaïlandaise à l'intérieur. ~80£ pour 4.", verdict: "Demander \"Pad Thai for kids\" (non épicé).", mapsQuery: "Churchill+Arms+119+Kensington+Church+St+London" },
-                { emoji: "🐟", name: "The Duke of Wellington", addr: "179 Portobello Rd, W11 2ED", price: "££", color: "neutral", body: "Pub gastronomique. Fish & Chips de référence du quartier. Décor anglais classique.", verdict: "Menu enfant dispo. Y aller avant 19h (bruyant après).", mapsQuery: "Duke+Wellington+179+Portobello+Rd+London" },
-                { emoji: "🥐", name: "Buns From Home", addr: "128 Talbot Rd, W11 1JR", price: "£", color: "emerald", body: "Brioches feuilletées cannelle/chocolat à emporter uniquement.", verdict: "4 brioches sur un banc = goûter royal pour 15£.", mapsQuery: "Buns+From+Home+128+Talbot+Rd+London" }
+                { emoji: "🥞", name: "Farm Girl", addr: "59A Portobello Rd, W11 3DB", price: "££", color: "amber", body: "Brunch Instagram. Island Pancakes sarrasin/coco, avocado toast, lattés à la rose. Cadre coloré.", verdict: "Arriver avant 12h un lundi = tranquille. ~70£ pour 4.", mapsQuery: "Farm+Girl+59A+Portobello+Rd+London" },
+                { emoji: "🍳", name: "Eggbreak", addr: "30 Uxbridge St, W8 7SY", price: "££", color: "neutral", body: "Plan B si Farm Girl est plein (4 min à pied). Spécialiste des œufs, très gourmand.", mapsQuery: "Eggbreak+30+Uxbridge+St+London" },
+                { emoji: "🥐", name: "Buns From Home", addr: "128 Talbot Rd, W11 1JR", price: "£", color: "emerald", body: "Brioches feuilletées cannelle, chocolat, pistache à emporter uniquement.", verdict: "4 brioches sur un banc = goûter royal pour ~15£.", mapsQuery: "Buns+From+Home+128+Talbot+Rd+London" },
+                { emoji: "🍺", name: "The Sun In Splendour", addr: "7 Portobello Road, W11 3DA", price: "££", color: "pink", body: "Pub Notting Hill. Sur le chemin de la balade J1, repéré par Sofie pour l'ambiance.", person: "Sofie", mapsQuery: "Sun+In+Splendour+Portobello+London" }
               ]
             },
             {
-              label: "🛍 Shopping & Spots",
+              label: "📸 Parcours photo Sofie",
               cards: [
-                { emoji: "🔴", name: "Alice's Antiques", addr: "86 Portobello Rd", color: "neutral", body: "La boutique rouge iconique vue dans le film Paddington. Juste pour voir.", mapsQuery: "Alices+Antiques+86+Portobello+Rd+London" },
-                { emoji: "📚", name: "The Notting Hill Bookshop", addr: "13 Blenheim Cres", color: "neutral", body: "La vraie librairie du film. Section enfants au fond, très mignonne.", mapsQuery: "Notting+Hill+Bookshop+13+Blenheim+Crescent+London" },
-                { emoji: "🍪", name: "Biscuiteers", addr: "194 Kensington Park Rd", color: "neutral", body: "Biscuits décorés à la main. Façade noire/blanche comme un dessin animé. Entrez pour l'odeur et voir les artistes peindre.", mapsQuery: "Biscuiteers+194+Kensington+Park+Rd+London" },
-                { emoji: "🧘", name: "UNIQLO + MUJI", addr: "High Street Kensington", color: "pink", body: "Les deux enseignes sont à 2 min l'une de l'autre sur High St Kensington. Parfait si vous passez dans le coin.", person: "Sofie", mapsQuery: "UNIQLO+High+Street+Kensington+London" },
-                { emoji: "🏛", name: "Design Museum", addr: "224-238 Kensington High St", color: "pink", body: "Architecture béton brutaliste reconvertie en bâtiment blanc spectaculaire. Boutique design incroyable (gratuit d'entrer juste pour la boutique).", verdict: "Détour 20 min si vous passez devant — la boutique vaut le coup seule.", person: "Sofie", mapsQuery: "Design+Museum+Kensington+London" }
+                { emoji: "🎨", name: "Colville Terrace + Colville Square Gardens", addr: "Notting Hill W11", color: "pink", body: "Les rues les plus colorées de Notting Hill selon Sofie. Pastel intense, fenêtres à guillotine, jardinières fleuries.", person: "Sofie", mapsQuery: "Colville+Terrace+London+W11" },
+                { emoji: "💕", name: "Saint Lukes Mews", addr: "Notting Hill W11 1DF", color: "pink", body: "La ruelle pavée du film Love Actually (scène des pancartes). Maisons pastel, très photogénique.", verdict: "Le must photo du J1.", person: "Sofie", mapsQuery: "St+Lukes+Mews+Notting+Hill+London" },
+                { emoji: "🛍", name: "Westbourne Grove", addr: "Notting Hill W11", color: "pink", body: "Rue commerçante chic de Notting Hill. Boutiques, cafés, concept stores. À traverser en redescendant vers l'hôtel.", person: "Sofie", mapsQuery: "Westbourne+Grove+London+W11" },
+                { emoji: "🌿", name: "Linden Gardens", addr: "Notting Hill W2", color: "pink", body: "Petite rue jolie repérée par Sofie, point de vue discret.", person: "Sofie", mapsQuery: "Linden+Gardens+Notting+Hill+London" }
               ]
             },
             {
-              label: "📸 Rues & Mews — Spots Photo",
+              label: "🏞 Parcs",
               cards: [
-                { emoji: "🌿", name: "Kynance Mews", addr: "South Kensington (près NHM)", color: "pink", body: "La ruelle victorienne la plus photogénique de Londres. Pavés, plantes grimpantes, maisons blanches. 5 min à pied du Natural History Museum.", verdict: "Le spot photo secret de J2 — arriver tôt le matin.", person: "Sofie", mapsQuery: "Kynance+Mews+London" },
-                { emoji: "🎨", name: "Colville Terrace + Linden Gardens", addr: "Notting Hill", color: "pink", body: "Les deux rues les plus colorées de Notting Hill selon Sofie. Pastel intense, fenêtres à guillotine, jardinières fleuries.", person: "Sofie", mapsQuery: "Colville+Terrace+London+W11" }
+                { emoji: "🌳", name: "Hyde Park", addr: "Juste sous l'hôtel", color: "emerald", body: "Le gros parc royal, écureuils ultra apprivoisés, Serpentine, Italian Gardens. Entrées Lancaster Gate ou Black Lion Gate. Gratuit.", verdict: "Décompression garantie après l'Eurostar. ~1h30 tranquille en fin de J1.", mapsQuery: "Hyde+Park+London" }
               ]
             }
           ]
         },
         {
-          label: "📍 J2 South Ken",
+          label: "📍 J2 NHM & Covent",
           sections: [
             {
-              label: "🍽 Manger — Jour 2",
+              label: "🦕 Activités",
               cards: [
-                { emoji: "🍔", name: "Honest Burgers", addr: "24 Thurloe St, South Ken", price: "££", color: "coral", body: "Viande brit de qualité, frites au romarin. Service rapide.", verdict: "Chaises hautes, coloriages. Nettement meilleur que McDo.", mapsQuery: "Honest+Burgers+24+Thurloe+St+London" },
-                { emoji: "☕", name: "V&A Garden Café", addr: "Victoria & Albert Museum", price: "££", color: "neutral", body: "Self-service dans la plus belle cour de musée. Bassin central.", verdict: "Laisser courir les enfants dans le jardin intérieur.", mapsQuery: "Victoria+Albert+Museum+Cromwell+Rd+London" },
-                { emoji: "🏪", name: "Seven Dials Market", addr: "35 Earlham St", price: "£-££", color: "coral", body: "Food court dans un entrepôt de bananes. Des dizaines de stands.", verdict: "Anti-dispute familiale : chacun choisit son plat, même table.", mapsQuery: "Seven+Dials+Market+35+Earlham+St+London" },
-                { emoji: "🥟", name: "Din Tai Fung", addr: "Covent Garden", price: "££", color: "neutral", body: "Dumplings. Les enfants voient les chefs plier les raviolis derrière la vitre.", verdict: "Réserver à l'avance. Spectacle garanti.", mapsQuery: "Din+Tai+Fung+Covent+Garden+London" },
-                { emoji: "🥩", name: "Flat Iron", addr: "17-18 Henrietta St", price: "££", color: "neutral", body: "Steak unique à 13£. Glace offerte à la sortie !", verdict: "Excellent rapport qualité/prix.", mapsQuery: "Flat+Iron+Henrietta+St+London" },
-                { emoji: "🍔", name: "Shake Shack", addr: "Covent Garden — 24 Market Building WC2E 8RD", price: "££", color: "coral", body: "Le burger qui ne se discute pas. Frites parfaites, milk-shake, ambiance cool sous la halle de Covent Garden.", verdict: "Les deux cartes de la famille ont ce spot — c'est un signe. 🤌", mapsQuery: "Shake+Shack+Covent+Garden+London" }
+                { emoji: "🦕", name: "Natural History Museum", addr: "Cromwell Rd, South Ken SW7 5BD", color: "coral", body: "Gratuit. Entrer par Exhibition Road. Dinosaures, baleine bleue au plafond, volcans. Réservation en ligne conseillée (créneau garanti).", verdict: "Le seul musée du voyage — on y va à fond.", mapsQuery: "Natural+History+Museum+London" },
+                { emoji: "🚇", name: "London Transport Museum", addr: "Covent Garden Piazza WC2E 7BB", color: "neutral", body: "Adultes £24.50 (annual pass), enfants gratuits. Playzone dédiée, vieux bus/trams, simulateur de conduite métro.", verdict: "Option si gros buffer l'après-midi — adoré des enfants de 7 ans mais cher pour 2 adultes.", mapsQuery: "London+Transport+Museum+Covent+Garden" }
+              ]
+            },
+            {
+              label: "🍽 Manger",
+              cards: [
+                { emoji: "🍔", name: "Shake Shack Covent Garden", addr: "24 Market Building, WC2E 8RD", price: "££", color: "coral", body: "Burger qui ne se discute pas. Frites parfaites, milk-shake. Sous la halle de Covent Garden.", verdict: "Déjeuner J2 validé — les deux cartes de la famille ont ce spot.", mapsQuery: "Shake+Shack+Covent+Garden+London" },
+                { emoji: "🦆", name: "Haozhan", addr: "8 Gerrard St, Chinatown", price: "££", color: "neutral", body: "Canard laqué excellent (sans les os). Incontournable Chinatown si on y dîne le soir.", mapsQuery: "Haozhan+8+Gerrard+St+London" },
+                { emoji: "🍦", name: "Chin Chin Dessert Club", addr: "54 Greek St, Soho", price: "£", color: "neutral", body: "Glaces à l'azote liquide (fumée !). Spectacle garanti pour les enfants.", mapsQuery: "Chin+Chin+Dessert+Club+Soho+London" }
+              ]
+            },
+            {
+              label: "🛍 Shopping & balades",
+              cards: [
+                { emoji: "🌈", name: "Neal's Yard", addr: "Neal's Yard, Covent Garden WC2H", color: "pink", body: "Petite cour cachée colorée : murs peints, plantes, cafés bio. Cachée dans une ruelle.", verdict: "Le spot Instagram secret que 90% des touristes ratent.", person: "Sofie", mapsQuery: "Neals+Yard+Covent+Garden+London" },
+                { emoji: "🧡", name: "The Moomin Shop", addr: "Covent Garden Market", color: "pink", body: "Boutique officielle Moomin. Peluches, céramiques, livres illustrés.", person: "Sofie", mapsQuery: "Moomin+Shop+Covent+Garden+London" },
+                { emoji: "✏️", name: "Choosing Keeping", addr: "21 Tower St, Covent Garden", color: "pink", body: "Papeterie haut de gamme : carnets japonais, stylos rares, objets de bureau. Un des plus beaux shops du quartier.", person: "Sofie", mapsQuery: "Choosing+Keeping+21+Tower+St+London" },
+                { emoji: "👕", name: "UNIQLO Covent Garden", addr: "Covent Garden", color: "pink", body: "Nouveau flagship énorme rouvert 3 semaines avant le voyage. Si besoin de bases enfants/adultes à bas prix.", person: "Sofie", mapsQuery: "UNIQLO+Covent+Garden+London" },
+                { emoji: "🏮", name: "Chinatown", addr: "Gerrard Street WC2H", color: "coral", body: "Vitrines avec canards rôtis suspendus, porte de la Terre Céleste, boutiques asiatiques. Rigolo pour les enfants, gratuit.", mapsQuery: "Chinatown+London" },
+                { emoji: "👗", name: "Rokit Covent Garden", addr: "42 Shelton St WC2H 9HZ", color: "pink", body: "Friperie vintage multi-étages. Années 70-90.", person: "Sofie", mapsQuery: "Rokit+42+Shelton+St+Covent+Garden+London" }
               ]
             }
           ]
         },
         {
-          label: "📍 J3 East End",
+          label: "📍 J3 Holland & Brick Lane",
           sections: [
             {
-              label: "🍽 Manger — Jour 3",
+              label: "🌿 Parcs & musées",
               cards: [
-                { emoji: "🥯", name: "Beigel Bake", addr: "159 Brick Lane — enseigne BLANCHE", price: "£", color: "amber", body: "Institution. Ouvert 24h/24. Bagel \"Salt Beef\" mythique ~6£. On mange debout.", verdict: "L'enseigne BLANCHE, pas la jaune à côté !", mapsQuery: "Beigel+Bake+159+Brick+Lane+London" },
-                { emoji: "🍛", name: "Dishoom Shoreditch", addr: "7 Boundary St, E2 7JE", price: "££", color: "amber", body: "Le meilleur indien de Londres. Déco Bombay. Queue fréquente.", verdict: "Y aller à 17h30 ou réserver longtemps à l'avance.", mapsQuery: "Dishoom+Shoreditch+7+Boundary+St+London" },
-                { emoji: "🐟", name: "Poppies Fish & Chips", addr: "Hanbury Street, Spitalfields", price: "££", color: "neutral", body: "Rétro. Serveurs en tenue années 50, Juke Box. Poisson ultra frais primé.", mapsQuery: "Poppies+Fish+Chips+Hanbury+St+London" },
-                { emoji: "🍫", name: "Dark Sugars", addr: "141 Brick Lane", price: "£", color: "neutral", body: "Chocolat chaud avec copeaux coupés devant vous. Pour le goûter.", mapsQuery: "Dark+Sugars+141+Brick+Lane+London" },
-                { emoji: "☕", name: "Sip & Rise Café & Bakery", addr: "Brick Lane area", price: "£", color: "pink", body: "Café/bakery recommandé par Sofie pour une pause qualité dans le quartier.", person: "Sofie", mapsQuery: "Sip+Rise+Cafe+Bakery+London" },
-                { emoji: "🍽", name: "118 The Lane", addr: "118 Brick Lane E1", price: "££", color: "pink", body: "Restaurant sur Brick Lane, alternative plus sit-down que le Beigel Bake.", person: "Sofie", mapsQuery: "118+Brick+Lane+London" }
+                { emoji: "🌸", name: "Kyoto Garden", addr: "Holland Park W8", color: "violet", body: "Jardin japonais, cascade, carpes koi. Accès libre et gratuit. Ouvert 7h30 → ~20h30 fin avril.", verdict: "Très beau en fin avril. Début idéal du J3.", mapsQuery: "Kyoto+Garden+Holland+Park+London" },
+                { emoji: "🛝", name: "Holland Park Adventure Playground", addr: "Holland Park W8", color: "violet", body: "Aire de jeux 5-14 ans. Tyrolienne 25m, mur d'escalade, bascule 10 places. Gratuit.", verdict: "Les enfants y tiennent 1h facile — parfait pour souffler.", mapsQuery: "Holland+Park+Adventure+Playground+London" },
+                { emoji: "🏛", name: "Design Museum", addr: "224-238 Kensington High St", color: "pink", body: "Collection permanente et boutique GRATUITES (pas d'expo payante). Architecture béton brutaliste reconvertie, bâtiment blanc spectaculaire.", verdict: "Sortie sud de Holland Park — 20-30 min si buffer.", person: "Sofie", mapsQuery: "Design+Museum+Kensington+London" }
               ]
             },
             {
-              label: "🛍 Shopping & Balades — Jour 3",
+              label: "🍽 Manger Brick Lane",
               cards: [
-                { emoji: "🎵", name: "Rough Trade East", addr: "Old Truman Brewery, 91 Brick Lane", color: "amber", body: "LE disquaire culte de Londres. Immense. Vinyles, CD, scène live, café, photobooth vintage.", mapsQuery: "Rough+Trade+East+Brick+Lane+London" },
-                { emoji: "👗", name: "Rokit Vintage", addr: "101 Brick Lane E1", color: "pink", body: "Vintage multi-étages. Années 70-90. Le meilleur dépôt-vente du coin selon Sofie. (Aussi présent à Covent Garden.)", person: "Sofie", mapsQuery: "Rokit+101+Brick+Lane+London" },
-                { emoji: "🐻", name: "Redchurch Street", addr: "Shoreditch E2", color: "pink", body: "La rue la plus tendance de Shoreditch. Concept stores, galeries, cafés. 5 min de Brick Lane. Idéal avant Dishoom.", person: "Sofie", mapsQuery: "Redchurch+Street+Shoreditch+London" },
-                { emoji: "🧒", name: "Young V&A (Museum of Childhood)", addr: "Cambridge Heath Rd, Bethnal Green", color: "pink", body: "Musée entièrement dédié aux enfants. Jouets historiques, déguisements, espace créatif. 15 min à pied de Brick Lane. Gratuit.", verdict: "Alternative à la Tour de Londres si les enfants sont fatigués — ils adorent.", person: "Sofie", mapsQuery: "Young+V%26A+Museum+Bethnal+Green+London" }
+                { emoji: "🏪", name: "Old Spitalfields Market", addr: "16 Horner Square, E1 6EW", price: "£-££", color: "violet", body: "Marché couvert, ouvert en semaine. Stands et cafés variés, tables communes. Plus calme et plus assis que Brick Lane.", verdict: "Le bon plan déjeuner sit-down du J3 freestyle.", mapsQuery: "Old+Spitalfields+Market+London" },
+                { emoji: "🍽", name: "118 The Lane", addr: "118 Brick Lane E1", price: "££", color: "pink", body: "Petit resto sit-down repéré par Sofie sur Brick Lane même. Alternative au marché.", person: "Sofie", mapsQuery: "118+Brick+Lane+London" },
+                { emoji: "🥯", name: "Beigel Bake", addr: "159 Brick Lane — enseigne BLANCHE", price: "£", color: "amber", body: "Institution ouverte 24h/24. Bagel Salt Beef mythique ~6£. On mange debout.", verdict: "À prendre en GOÛTER, pas en déjeuner. L'enseigne BLANCHE, pas la jaune à côté !", mapsQuery: "Beigel+Bake+159+Brick+Lane+London" },
+                { emoji: "🍺", name: "91 Brick Lane", addr: "91 Brick Lane, Old Truman Brewery", price: "££", color: "pink", body: "Terrasse extérieure, grandes tables en bois, petite cour abritée. Pour un verre tranquille en fin d'après-midi.", person: "Sofie", mapsQuery: "91+Brick+Lane+London" },
+                { emoji: "☕", name: "Brick Lane Coffee Shop", addr: "157 Brick Lane E1", price: "£", color: "pink", body: "Café de quartier pour une pause.", person: "Sofie", mapsQuery: "Brick+Lane+Coffee+Shop+London" }
+              ]
+            },
+            {
+              label: "🎨 Balades & shopping",
+              cards: [
+                { emoji: "🎵", name: "Rough Trade East", addr: "Old Truman Brewery, 91 Brick Lane", color: "violet", body: "LE disquaire culte de Londres. Immense. Vinyles, CD, scène live, café, photobooth vintage.", mapsQuery: "Rough+Trade+East+Brick+Lane+London" },
+                { emoji: "👗", name: "Rokit Vintage Brick Lane", addr: "101 Brick Lane E1", color: "pink", body: "Vintage multi-étages. Années 70-90. Le meilleur dépôt-vente du coin selon Sofie.", person: "Sofie", mapsQuery: "Rokit+101+Brick+Lane+London" },
+                { emoji: "🏘", name: "Fournier / Wilkes / Princelet Streets", addr: "Spitalfields E1", color: "pink", body: "Rues géorgiennes (ex-huguenotes puis juives). Les plus belles du quartier, calmes en semaine.", person: "Sofie", mapsQuery: "Fournier+Street+London" },
+                { emoji: "🎨", name: "Redchurch Street", addr: "Shoreditch E2", color: "pink", body: "Rue la plus tendance de Shoreditch. Concept stores, galeries, cafés. 5 min de Brick Lane.", person: "Sofie", mapsQuery: "Redchurch+Street+Shoreditch+London" },
+                { emoji: "👾", name: "Space Invaders", addr: "Brick Lane / Shoreditch", color: "violet", body: "Pixel-art de l'artiste Invader cachés sur les murs du quartier. Mission chasse aux trésors pour les enfants.", mapsQuery: "Space+Invaders+Brick+Lane+London" }
               ]
             },
             {
               label: null,
-              infobox: { color: "red", title: "⚠ Columbia Road Flower Market — ATTENTION", items: [
-                "Sofie l'a mise sur sa carte, mais ce marché est <b>ouvert le dimanche uniquement</b>. Votre voyage est lundi-jeudi. Ce n'est pas possible cette fois. À garder pour un prochain séjour !"
+              infobox: { color: "red", title: "⚠ Columbia Road Flower Market — pas cette fois", items: [
+                "Sofie l'a mis sur sa carte, mais ce marché est <b>ouvert uniquement le dimanche</b>. Votre voyage est lundi-jeudi. À garder pour un prochain séjour."
               ]}
             }
           ]
         },
         {
-          label: "📍 J4 Central",
+          label: "🍺 Soirées & Survie",
           sections: [
             {
-              label: "🛍 Shopping — Central",
+              label: "🍺 Pubs & takeaway proches hôtel",
               cards: [
-                { emoji: "🧸", name: "Hamleys", addr: "188 Regent St", color: "amber", body: "Le plus grand magasin de jouets du monde. 7 étages. Démonstrateurs de drones partout.", verdict: "Difficile d'en sortir les enfants sans crise de larmes.", mapsQuery: "Hamleys+188+Regent+St+London" },
-                { emoji: "🟡", name: "Lego Store", addr: "Leicester Square", color: "neutral", body: "Le plus grand du monde. Big Ben en Lego géant. Paradis garanti.", mapsQuery: "Lego+Store+Leicester+Square+London" },
-                { emoji: "🦸", name: "Forbidden Planet", addr: "179 Shaftesbury Ave", color: "neutral", body: "Comics, figurines, manga, Harry Potter. Le top geek.", mapsQuery: "Forbidden+Planet+179+Shaftesbury+Ave+London" },
-                { emoji: "👗", name: "Rokit Covent Garden", addr: "42 Shelton St WC2H 9HZ", color: "pink", body: "L'autre adresse Rokit vintage. Plus centrale, pratique pour J4.", person: "Sofie", mapsQuery: "Rokit+42+Shelton+St+Covent+Garden+London" },
-                { emoji: "✏️", name: "Choosing Keeping", addr: "21 Tower St, Covent Garden", color: "pink", body: "Papeterie haut de gamme — carnets japonais, stylos, objets de bureau rares. Un des shops les plus beaux du quartier.", person: "Sofie", mapsQuery: "Choosing+Keeping+21+Tower+St+London" },
-                { emoji: "🧡", name: "The Moomin Shop", addr: "Covent Garden Market", color: "pink", body: "La boutique officielle Moomin. Peluches, céramiques, livres illustrés. Les jumeaux vont adorer.", verdict: "Stop indispensable si les enfants connaissent les Moomins.", person: "Sofie", mapsQuery: "Moomin+Shop+Covent+Garden+London" }
+                { emoji: "🍺", name: "The Champion", addr: "1 Wellington Terrace, W2 4LW", price: "££", color: "emerald", body: "Pub traditionnel de 1838, face aux Kensington Gardens. Très proche hôtel, ambiance authentique.", verdict: "Le pub du soir par défaut. Pinte + frites + on rentre.", mapsQuery: "The+Champion+Wellington+Terrace+London" },
+                { emoji: "🍺", name: "Bayswater Arms", addr: "99 Queensway, W2 4QH", price: "££", color: "neutral", body: "Pub corner traditionnel, terrasse. Bon fish & chips complet (~£60-80 famille).", mapsQuery: "Bayswater+Arms+Queensway+London" },
+                { emoji: "🐟", name: "Hobson's Fish & Chips", addr: "9 Porchester Road, W2 5DP", price: "££", color: "emerald", body: "Fish & chips artisanal, poisson frais Billingsgate. Takeaway. 5 min de l'hôtel.", verdict: "Le meilleur takeaway poisson du quartier. ~£30-40 famille.", mapsQuery: "Hobsons+Fish+Chips+Porchester+Road+London" },
+                { emoji: "🍕", name: "Pizza Pilgrims Queensway", addr: "38 Queensway, W2 3RS", price: "££", color: "neutral", body: "Pizza napolitaine artisanale. 3 min de l'hôtel. Valeur sûre kids-friendly.", mapsQuery: "Pizza+Pilgrims+Queensway+London" },
+                { emoji: "🍔", name: "Five Guys Queensway", addr: "59-63 Queensway, W2 4QH", price: "££", color: "neutral", body: "Burgers. Solution facile si les enfants sont à bout.", mapsQuery: "Five+Guys+Queensway+London" },
+                { emoji: "🌯", name: "Taza Kebab House", addr: "35A Queensway, W2 4QJ", price: "£", color: "neutral", body: "Shawarma/kebab libanais honnête. 3 min de l'hôtel. ~£25-35 famille.", mapsQuery: "Taza+Kebab+Queensway+London" }
               ]
             },
             {
-              label: "🏞 Parcs & Détente",
+              label: "🛒 Courses",
               cards: [
-                { emoji: "🌳", name: "St James's Park Playground", addr: "St James's Park, SW1A", color: "pink", body: "Aire de jeux dans le parc royal le plus central de Londres. Parfait pour une pause avant l'Eurostar — à 15 min de St Pancras.", person: "Sofie", mapsQuery: "St+James+Park+Playground+London" }
+                { emoji: "🛒", name: "Waitrose Queensway", addr: "98-101 Queensway, W2 4QH", price: "££", color: "emerald", body: "Le plus proche de l'hôtel (2 min). Plats préparés, sandwiches, épices que Sofie aime. Premier ravitaillement J1.", verdict: "À faire en fin de J1 au retour de la balade.", person: "Sofie", mapsQuery: "Waitrose+Queensway+London" },
+                { emoji: "🛒", name: "M&S Foodhall Notting Hill Gate", addr: "113-119 Notting Hill Gate, W11 3LB", price: "££", color: "amber", body: "Meilleure qualité. Meal Deal ~£5 (sandwich + boisson + snack). 8 min de l'hôtel.", verdict: "Option si Waitrose ne suffit pas.", mapsQuery: "M%26S+Notting+Hill+Gate+London" },
+                { emoji: "🛒", name: "M&S Marble Arch", addr: "458 Oxford Street, W1C 1AP", price: "££", color: "teal", body: "Le plus grand M&S de la zone. Pour les courses souvenirs + repas train du J4.", verdict: "Destination principale du J4 matin.", mapsQuery: "M%26S+Marble+Arch+Oxford+Street+London" },
+                { emoji: "💊", name: "Boots Oxford Street", addr: "Marble Arch area", price: "£", color: "teal", body: "Parapharmacie UK : crèmes, cosmétiques, souvenirs pas chers.", mapsQuery: "Boots+Marble+Arch+Oxford+Street+London" },
+                { emoji: "🏪", name: "Tesco Express Queensway", addr: "62-64 Queensway, W2 3RL", price: "£", color: "neutral", body: "Dépannage rapide. Meal Deal 4£. 3 min de l'hôtel.", mapsQuery: "Tesco+Express+Queensway+London" }
               ]
             },
             {
-              label: "🍽 Manger — Central",
-              cards: [
-                { emoji: "🥗", name: "Neal's Yard", addr: "Neal's Yard, Covent Garden WC2H", color: "pink", body: "Petite cour cachée colorée à souhait — murs peints, plantes, cafés bio. Plusieurs restos/cafés autour. Cachée dans une ruelle.", verdict: "Le spot Instagram secret de Covent Garden que 90% des touristes ratent.", person: "Sofie", mapsQuery: "Neal%27s+Yard+Covent+Garden+London" },
-                { emoji: "🥘", name: "Bill's Restaurant", addr: "St Martin's Courtyard, WC2E 9AB", price: "££", color: "pink", body: "Brasserie anglaise chaleureuse. Petit-déj, brunch et dîner. Cadre fleuri. Bon menu enfant.", verdict: "Option sûre pour toute la famille si les kids sont à bout.", person: "Sofie", mapsQuery: "Bills+Restaurant+St+Martins+Courtyard+London" },
-                { emoji: "🧊", name: "Chin Chin Dessert Club", addr: "54 Greek St, Soho", price: "£", color: "neutral", body: "Glaces à l'azote liquide (fumée !). WOW pour les enfants.", mapsQuery: "Chin+Chin+Dessert+Club+54+Greek+St+London" },
-                { emoji: "🦆", name: "Haozhan", addr: "8 Gerrard St, Chinatown", price: "££", color: "neutral", body: "Canard laqué excellent (sans les os). Incontournable Chinatown.", mapsQuery: "Haozhan+8+Gerrard+St+London" }
-              ]
-            }
-          ]
-        },
-        {
-          label: "🛒 Survie",
-          sections: [
-            {
-              label: "🛒 Supermarchés",
-              cards: [
-                { emoji: "🥗", name: "M&S Food", addr: "Marks & Spencer — partout", price: "££", color: "amber", body: "Le top qualité. Sandwiches, cookies, chips \"Prawn Cocktail\". Idéal pour pique-niquer dans les parcs.", verdict: "Meal Deal ~5£ (sandwich + boisson + snack)." },
-                { emoji: "🏪", name: "Tesco Express / Sainsbury's", addr: "Partout en ville", price: "£", color: "neutral", body: "Meal Deal à 4£ — le déjeuner des Londoniens. Le plus économique." }
-              ]
-            },
-            {
-              label: "💡 Astuces Malines",
+              label: "💡 Astuces",
               infoboxes: [
                 { color: "green", title: "Économies au resto", items: [
-                  "<b>\"Carafe of tap water\"</b> — eau du robinet gratuite et excellente. ~15£ d'économie par repas.",
+                  "<b>\"Carafe of tap water\"</b> — eau du robinet gratuite et excellente.",
                   "<b>Service charge :</b> si 12.5% est déjà sur la facture, ne rajoutez rien.",
-                  "Pique-niquer à Hyde Park ou Kensington Gardens avec M&S = top."
+                  "Pique-niquer à Hyde Park avec M&S/Waitrose = top et très anglais."
                 ]},
                 { color: "amber", title: "Souvenirs pas chers", items: [
-                  "<b>Primark Oxford St</b> — t-shirts HP, pyjamas London, chaussettes Union Jack : 2-5£.",
-                  "<b>Supermarché</b> — Yorkshire Tea, Digestives, Cadbury Dairy Milk, Jaffa Cakes : 3× moins cher que les boutiques touristiques.",
+                  "<b>Primark Oxford St</b> — t-shirts HP, pyjamas, chaussettes Union Jack : 2-5£.",
+                  "<b>Supermarchés</b> — Yorkshire Tea, Digestives, Cadbury Dairy Milk, Jaffa Cakes : 3× moins cher que les boutiques touristiques.",
                   "<b>Prises UK</b> : interrupteur ON/OFF sur le mur. Si le téléphone ne charge pas, cherchez l'interrupteur !"
                 ]}
               ]
@@ -481,85 +541,105 @@ const TRIP = {
       id: "budget",
       tab: "💰 Budget",
       type: "budget",
-      banner: { accent: "emerald", badge: "Budget", title: "Estimation 2026", sub: "Pour la famille (2 adultes + 2 enfants)" },
+      banner: { accent: "emerald", badge: "Budget", title: "Estimation 2026 — version allégée", sub: "Pour la famille (2 adultes + 2 enfants)" },
       tables: [
         {
-          label: "🎟 Entrées & Transport",
+          label: "🎟 Entrées & Activités",
           headers: ["Poste", "Coût", "Famille", "Note"],
           rows: [
-            ["London Eye", "~35£/A", "~110£", "-10% en ligne"],
-            ["Tower of London", "~34£/A", "~95£", "Gratuit <5 ans"],
-            ["Métro (Daily Cap)", "~8.50£/A", "~17£/j", "Enfants gratuits"],
-            ["Taxi gare ↔ hôtel", "~25£/trajet", "~50£", "+si bouchons"]
+            ["Natural History Museum", "Gratuit", "0£", "Résa en ligne"],
+            ["Holland Park + Kyoto + Playground", "Gratuit", "0£", ""],
+            ["Hyde Park", "Gratuit", "0£", ""],
+            ["Design Museum (permanente)", "Gratuit", "0£", "Optionnel"],
+            ["London Transport Museum", "£24.50/A", "~£49", "🟡 Optionnel"]
           ]
         },
         {
-          label: "🍽 Repères Repas",
+          label: "🚇 Transport",
+          headers: ["Poste", "Coût", "Famille"],
+          rows: [
+            ["Taxi St Pancras → hôtel", "~25-30£", "~30£"],
+            ["Métro/bus (Daily Cap × 3j)", "~8.90£/A/j", "~55£"],
+            ["Métro J4 (M&S + gare)", "~5£/A", "~10£"],
+            ["Enfants métro/bus", "Gratuit", "—"]
+          ],
+          footer: ["Transport total", "~95£"]
+        },
+        {
+          label: "🍽 Repères repas",
           headers: ["Repas type", "Par pers.", "Famille"],
           rows: [
-            ["Brunch (Farm Girl)", "~18£", "~70£"],
-            ["Fish & Chips pub", "~20£", "~65£"],
-            ["Food Court (Dials)", "~15£", "~60£"],
-            ["Meal Deal supermarché", "~4-5£", "~18£"],
-            ["Glace (camion 99)", "~4£", "~16£"],
-            ["Pinte de bière 🍺", "~7.50£", "—"]
+            ["Brunch Farm Girl (J1 midi)", "~18£", "~70£"],
+            ["Shake Shack (J2 midi)", "~14£", "~55£"],
+            ["Spitalfields Market (J3 midi)", "~12£", "~50£"],
+            ["Pub pinte + frites (1 soir)", "~10£", "~35£"],
+            ["Hobson's Fish & Chips takeaway", "~10£", "~35£"],
+            ["Pique-nique M&S/Waitrose", "~6£", "~25£"],
+            ["Petit-déj hôtel", "Inclus", "—"]
           ]
         },
         {
-          label: "📊 Total Estimé",
+          label: "📊 Total estimé",
           headers: ["Catégorie", "Estimation"],
           rows: [
-            ["Entrées (Eye + Tour)", "~200£"],
-            ["Transport local (3 jours)", "~50£"],
-            ["Taxis (2 trajets)", "~50£"],
-            ["Repas (3 dîners + déj)", "~450£"],
-            ["Shopping / Souvenirs", "~100-200£"]
+            ["Entrées & activités", "~0-50£"],
+            ["Transport local", "~95£"],
+            ["Déjeuners (3 jours)", "~175£"],
+            ["Dîners (3 soirs flexibles)", "~95£"],
+            ["Provisions Waitrose/M&S", "~50£"],
+            ["Souvenirs (M&S + Boots + Primark)", "~80-150£"]
           ],
-          footer: ["TOTAL (hors hôtel + Eurostar)", "850–950£"]
+          footer: ["TOTAL (hors hôtel + Eurostar)", "~£500-600"]
         }
       ],
-      note: "Hors hébergement et transport Paris–Londres."
+      note: "Hors hébergement et transport Paris-Londres. Allégé de ~40% par rapport à la version initiale grâce au retrait Tower/Eye/British Museum et à la stratégie soirées flexibles."
     }
   ],
 
   mapData: {
-    1: { center:[51.510,-0.198], zoom:13, pts:[
-      { p:[51.5318,-0.1236], label:'🚂 St Pancras' },
-      { p:[51.5111,-0.1870], label:'🏨 Hôtel' },
+    1: { center:[51.513,-0.192], zoom:14, pts:[
+      { p:[51.5318,-0.1263], label:'🚂 St Pancras' },
+      { p:[51.5111,-0.1870], label:'🏨 Hôtel Thistle' },
       { p:[51.5143,-0.2042], label:'🥞 Farm Girl' },
-      { p:[51.5183,-0.2012], label:'📸 Portobello Rd' },
-      { p:[51.5049,-0.1932], label:'🌸 Churchill Arms' },
-      { p:[51.5156,-0.2022], label:'♥ Colville Terrace' },
-      { p:[51.5003,-0.1944], label:'♥ UNIQLO/MUJI' },
-      { p:[51.5000,-0.2002], label:'♥ Design Museum' }
+      { p:[51.5170,-0.1975], label:'📸 Colville Terrace' },
+      { p:[51.5165,-0.2010], label:'💕 St Lukes Mews' },
+      { p:[51.5157,-0.1990], label:'🥐 Buns From Home' },
+      { p:[51.5140,-0.1960], label:'🛍 Westbourne Grove' },
+      { p:[51.5095,-0.1812], label:'🌳 Hyde Park' },
+      { p:[51.5126,-0.1861], label:'🛒 Waitrose Queensway' },
+      { p:[51.5117,-0.1885], label:'🍺 The Champion' },
+      { p:[51.5145,-0.1893], label:'🐟 Hobson\'s F&C' },
+      { p:[51.5128,-0.1860], label:'♥ The Sun In Splendour' }
     ]},
-    2: { center:[51.500,-0.155], zoom:12, pts:[
+    2: { center:[51.505,-0.140], zoom:13, pts:[
       { p:[51.4967,-0.1764], label:'🦕 NHM' },
-      { p:[51.4967,-0.1740], label:'🔬 Science Mus.' },
-      { p:[51.5033,-0.1192], label:'🎡 London Eye' },
-      { p:[51.5074,-0.0994], label:'🏛 Tate Modern' },
-      { p:[51.5124,-0.1263], label:'🍱 Seven Dials' },
-      { p:[51.4974,-0.1850], label:'♥ Kynance Mews' },
-      { p:[51.5120,-0.1226], label:'🍔 Shake Shack' }
-    ]},
-    3: { center:[51.519,-0.085], zoom:13, pts:[
-      { p:[51.5194,-0.1270], label:'🏛 British Museum' },
-      { p:[51.5081,-0.0759], label:'⚔️ Tower' },
-      { p:[51.5222,-0.0717], label:'🥯 Brick Lane' },
-      { p:[51.5225,-0.0764], label:'🛍 Spitalfields' },
-      { p:[51.5261,-0.0737], label:'🍛 Dishoom' },
-      { p:[51.5244,-0.0746], label:'♥ Redchurch St' },
-      { p:[51.5289,-0.0553], label:'♥ Young V&A' },
-      { p:[51.5222,-0.0717], label:'♥ Rokit' }
-    ]},
-    4: { center:[51.516,-0.130], zoom:13, pts:[
-      { p:[51.5322,-0.1234], label:'🧙 Platform 9¾' },
-      { p:[51.5154,-0.1755], label:'🐻 Paddington' },
-      { p:[51.5322,-0.1232], label:'🧀 Coal Drops Yard' },
-      { p:[51.5091,-0.1413], label:'🛍 Hamleys' },
-      { p:[51.5145,-0.1263], label:'♥ Neal\'s Yard' },
+      { p:[51.5120,-0.1226], label:'🍔 Shake Shack' },
+      { p:[51.5145,-0.1263], label:'🌈 Neal\'s Yard' },
+      { p:[51.5111,-0.1305], label:'🏮 Chinatown' },
+      { p:[51.5129,-0.1223], label:'🚇 Transport Museum' },
       { p:[51.5118,-0.1229], label:'♥ Moomin Shop' },
-      { p:[51.5010,-0.1383], label:'♥ St James\'s Park' }
+      { p:[51.5134,-0.1280], label:'♥ Choosing Keeping' },
+      { p:[51.5131,-0.1242], label:'♥ UNIQLO Covent' },
+      { p:[51.5138,-0.1247], label:'♥ Rokit Covent' }
+    ]},
+    3: { center:[51.515,-0.110], zoom:12, pts:[
+      { p:[51.5030,-0.2050], label:'🌸 Kyoto Garden' },
+      { p:[51.5040,-0.2038], label:'🛝 Holland Playground' },
+      { p:[51.5000,-0.2002], label:'🏛 Design Museum' },
+      { p:[51.5193,-0.0755], label:'🏪 Spitalfields Market' },
+      { p:[51.5225,-0.0720], label:'🥯 Beigel Bake' },
+      { p:[51.5216,-0.0723], label:'🎵 Rough Trade East' },
+      { p:[51.5215,-0.0725], label:'🍺 91 Brick Lane' },
+      { p:[51.5209,-0.0727], label:'🍽 118 The Lane' },
+      { p:[51.5220,-0.0730], label:'♥ Rokit Brick Lane' },
+      { p:[51.5203,-0.0745], label:'♥ Fournier Street' },
+      { p:[51.5237,-0.0763], label:'♥ Redchurch Street' }
+    ]},
+    4: { center:[51.516,-0.155], zoom:13, pts:[
+      { p:[51.5144,-0.1559], label:'🛒 M&S Marble Arch' },
+      { p:[51.5144,-0.1559], label:'💊 Boots Oxford St' },
+      { p:[51.5322,-0.1234], label:'🚂 St Pancras' },
+      { p:[51.5111,-0.1870], label:'🏨 Hôtel' }
     ]}
   },
 
