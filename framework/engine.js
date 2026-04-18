@@ -196,6 +196,8 @@ function renderSection(section) {
       return renderInfoboxGroup(section);
     case 'apps':
       return renderApps(section);
+    case 'collapsible':
+      return renderCollapsible(section);
     case 'divider':
       return '<div class="divider"></div>';
     case 'spacer':
@@ -203,6 +205,19 @@ function renderSection(section) {
     default:
       return '';
   }
+}
+
+function renderCollapsible(section) {
+  var html = '<details class="collapsible"' + (section.open ? ' open' : '') + '>';
+  html += '<summary>';
+  html += '<span class="coll-title">' + section.title + '</span>';
+  if (section.summary) {
+    html += '<span class="coll-sub">' + section.summary + '</span>';
+  }
+  html += '</summary>';
+  html += '<div class="coll-content">' + (section.content || '') + '</div>';
+  html += '</details>';
+  return html;
 }
 
 /* ── Banner rendering ── */
@@ -236,6 +251,7 @@ function renderTimeline(timeline, accent) {
         if (item.type === 'tip') prefix = '✦ ';
         else if (item.type === 'sub') prefix = '↳ ';
         else if (item.type === 'warn') prefix = '⚠ ';
+        else if (item.type === 'move') prefix = '🚇 ';
         var cls = item.type ? ' class="' + item.type + '"' : '';
         html += '<li' + cls + '>' + prefix + item.text + '</li>';
       });
@@ -283,13 +299,7 @@ function renderDayPage(page, pageIndex) {
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '">';
   html += renderBanner(page.banner);
   html += '<div class="map-wrap" id="map' + pageIndex + '"></div>';
-  if (page.preTimeline) {
-    page.preTimeline.forEach(function(section) { html += renderSection(section); });
-  }
   html += renderTimeline(page.timeline, page.banner ? page.banner.accent : '');
-  if (page.postTimeline) {
-    page.postTimeline.forEach(function(section) { html += renderSection(section); });
-  }
   html += renderRainPlans(page.rainPlans);
   html += '</div>';
   return html;
@@ -344,8 +354,8 @@ function renderAddressesPage(page, pageIndex) {
 function renderFullmapPage(page, pageIndex) {
   var dayColors = TRIP.dayColors;
   var dayKeys = Object.keys(dayColors);
-  var people = TRIP.meta.people || ['Greg', 'Sofie'];
-  var personTag = TRIP.meta.personTag || '♥';
+  var catColors = TRIP.catColors || {};
+  var catLabels = TRIP.catLabels || {};
 
   var html = '<div class="page' + (pageIndex === 0 ? ' active' : '') + '" id="page' + pageIndex + '" style="padding-bottom:0">';
   html += '<div style="position:relative">';
@@ -358,14 +368,10 @@ function renderFullmapPage(page, pageIndex) {
   });
   html += '</div>';
   html += '<div class="tog-sep"></div>';
-  html += '<div class="tog-row">';
-  html += '<button class="tog person-active" id="tog-all" onclick="togglePerson(\'all\')">Tous</button>';
-  if (people[0]) {
-    html += '<button class="tog" id="tog-' + people[0].toLowerCase() + '" onclick="togglePerson(\'' + people[0].toLowerCase() + '\')">👨 ' + people[0] + '</button>';
-  }
-  if (people[1]) {
-    html += '<button class="tog" id="tog-' + people[1].toLowerCase() + '" onclick="togglePerson(\'' + people[1].toLowerCase() + '\')">' + personTag + ' ' + people[1] + '</button>';
-  }
+  html += '<div class="tog-row tog-row-wrap">';
+  Object.keys(catColors).forEach(function(cat) {
+    html += '<button class="tog" id="togcat-' + cat + '" onclick="toggleCat(\'' + cat + '\')"><span class="dot" style="background:' + catColors[cat] + '"></span>' + (catLabels[cat] || cat) + '</button>';
+  });
   html += '</div>';
   html += '</div>';
 
@@ -553,15 +559,13 @@ function goToPlace(cardId) {
 
 /* ── Map state (fullmap) ── */
 
-var mapState = { map: null, markers: [], days: {}, person: 'all' };
+var mapState = { map: null, markers: [], days: {}, cats: {} };
 
 function updateMapVis() {
   mapState.markers.forEach(function(entry) {
     var dayOk = mapState.days[entry.day];
-    var personOk = mapState.person === 'all'
-      || (mapState.person === (TRIP.meta.people[1] || 'sofie').toLowerCase() && entry.isSofie)
-      || (mapState.person === (TRIP.meta.people[0] || 'greg').toLowerCase() && !entry.isSofie);
-    var show = dayOk && personOk;
+    var catOk = mapState.cats[entry.cat] !== false;
+    var show = dayOk && catOk;
     if (show && !entry.marker.getElement().parentNode) entry.marker.addTo(mapState.map);
     else if (!show) entry.marker.remove();
   });
@@ -573,16 +577,10 @@ function toggleDay(day) {
   updateMapVis();
 }
 
-function togglePerson(p) {
-  mapState.person = p;
-  var people = TRIP.meta.people || ['Greg', 'Sofie'];
-  var ids = ['all'];
-  if (people[0]) ids.push(people[0].toLowerCase());
-  if (people[1]) ids.push(people[1].toLowerCase());
-  ids.forEach(function(id) {
-    var el = document.getElementById('tog-' + id);
-    if (el) el.classList.toggle('person-active', id === p);
-  });
+function toggleCat(cat) {
+  mapState.cats[cat] = mapState.cats[cat] === false ? true : false;
+  var el = document.getElementById('togcat-' + cat);
+  if (el) el.classList.toggle('off', mapState.cats[cat] === false);
   updateMapVis();
 }
 
@@ -601,7 +599,7 @@ function initMap(pageNum) {
   if (typeof maplibregl === 'undefined') return;
 
   var fullmapIdx = getFullmapPageIndex();
-  var personTag = TRIP.meta.personTag || '♥';
+  var catColors = TRIP.catColors || {};
   var MAP_STYLE = 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
 
   /* ── Full map ── */
@@ -632,21 +630,19 @@ function initMap(pageNum) {
         var day = parseInt(dayStr);
         var d = TRIP.mapData[day];
         if (!d) return;
-        var dayColor = TRIP.dayColors[day];
+        var fallbackColor = TRIP.dayColors[day];
         d.pts.forEach(function(m) {
-          var isSofie = m.label.includes(personTag);
-          var color = isSofie ? '#EC4899' : dayColor;
+          var color = (m.cat && catColors[m.cat]) ? catColors[m.cat] : fallbackColor;
           var pillEl = createPillEl(m.label, color);
 
-          var name = m.label.replace(personTag + ' ', '');
           var lat = m.p[0], lng = m.p[1];
           var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
-          var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(name);
-          var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(name);
-          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(name + ' London');
+          var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(m.label);
+          var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(m.label);
+          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(m.label + ' London');
 
           var popupHtml = '<div class="mp">' +
-            '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' · ' + name + '</a></div>' +
+            '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' · ' + m.label + '</a></div>' +
             '<div class="mp-links">' +
               '<a class="mp-btn" href="' + gUrl + '" target="_blank">🗺 Google</a>' +
               '<a class="mp-btn" href="' + aUrl + '" target="_blank">🍎 Apple</a>' +
@@ -659,7 +655,7 @@ function initMap(pageNum) {
             .setPopup(popup)
             .addTo(map);
 
-          mapState.markers.push({ marker: marker, day: day, isSofie: isSofie });
+          mapState.markers.push({ marker: marker, day: day, cat: m.cat || 'other' });
         });
       });
     });
@@ -683,7 +679,8 @@ function initMap(pageNum) {
   var el2 = document.getElementById('map' + pageNum);
   if (!el2 || el2.dataset.mapInit) return;
   el2.dataset.mapInit = '1';
-  var dayColor = TRIP.dayColors[dayNum] || '#333';
+  var fallbackColor = TRIP.dayColors[dayNum] || '#333';
+  var catColorsDay = TRIP.catColors || {};
 
   var dayMap = new maplibregl.Map({
     container: 'map' + pageNum,
@@ -696,7 +693,8 @@ function initMap(pageNum) {
 
   dayMap.on('load', function() {
     d.pts.forEach(function(m) {
-      var pillEl = createPillEl(m.label, dayColor);
+      var color = (m.cat && catColorsDay[m.cat]) ? catColorsDay[m.cat] : fallbackColor;
+      var pillEl = createPillEl(m.label, color);
       var popup = new maplibregl.Popup({ maxWidth: '200px', offset: 10 }).setHTML('<b>' + m.label + '</b>');
       new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
         .setLngLat(toLngLat(m.p))
