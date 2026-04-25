@@ -15,7 +15,8 @@ const TRIP = {
     personTag: "♥",
     mapCenter: [51.512, -0.150],
     mapZoom: 12,
-    startDate: "2026-04-27"
+    startDate: "2026-04-27",
+    timezone: "Europe/London"
   },
 
   pages: [

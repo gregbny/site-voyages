@@ -782,9 +782,9 @@ function initKeyboard() {
 
 function getTodayDayNumber() {
   if (!TRIP.meta.startDate) return 1;
-  var start = new Date(TRIP.meta.startDate + 'T00:00:00');
-  var now = new Date();
-  var diff = Math.floor((now - start) / 86400000) + 1;
+  var tz = TRIP.meta.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone;
+  var todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: tz }).format(new Date());
+  var diff = Math.round((new Date(todayStr + 'T00:00:00Z') - new Date(TRIP.meta.startDate + 'T00:00:00Z')) / 86400000) + 1;
   var dayPages = TRIP.pages.filter(function(p) { return p.type === 'day'; });
   if (diff < 1) return dayPages.length > 0 ? dayPages[0].dayNumber : 1;
   if (diff > dayPages.length) return dayPages.length > 0 ? dayPages[dayPages.length - 1].dayNumber : 1;
