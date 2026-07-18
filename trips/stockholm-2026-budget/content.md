@@ -1,6 +1,14 @@
 # 🇸🇪 Stockholm 2026 — Version Maline 💶
-**29 Juillet → 3 Août 2026 · 2A + 2E (7 ans) · QG : Södermalm**
-*Budget cible : ~500 € (hors hébergement et transport aller-retour)*
+**29 Juillet → 3 Août 2026 · 2A + 2E (7 ans) · QG : SoFo, Södermalm**
+*Budget cible : ~710 € (hors hébergement et transport aller-retour)*
+
+## 🏠 LOGEMENT (RÉSERVÉ)
+- **Airbnb « Charming 1BR in Trendy SoFo »** — hôte Fredrik
+- **Åsögatan 190, Södermalm (116 32)** — à 350 m de Nytorget
+- Check-in **mer 29/07 à 16h00** (arrivée autonome, serrure connectée — procédure via messagerie Airbnb, wifi dans l'appli 48h avant)
+- Check-out **lun 3/08 à 10h00** — sacs poubelle fermés près de la porte
+- Code résa : HM9H92MCPS · 4 voyageurs max, pas d'animaux
+- Métro : Medborgarplatsen (ligne verte 17/18/19), ~10 min à pied
 
 > 💡 **Philosophie :** Pas d'interdit. Les attractions clés sont là. Mais on pique-nique le midi, on cuisine certains soirs, on évite les trucs chers et discutables, et on profite du fait que Stockholm est une ville magnifique à parcourir à pied et gratuitement.
 
@@ -46,12 +54,12 @@
 
 ---
 
-## 🅿️ STATIONNEMENT
+## 🅿️ STATIONNEMENT & TRÄNGSELSKATT
 
-- **Juillet = GRATUIT pour la taxe de congestion** (trängselskatt suspendue pendant les vacances scolaires suédoises)
-- **Stratégie :** Garez la voiture au **P-Hus Medborgarplatsen** à l'arrivée, ne la reprenez que le dernier jour
-- Zones résidentielles de Södermalm : **gratuit après 19h et le dimanche**
-- App **EasyPark** pour payer en rue sans aller au parcmètre
+- **La rue, pas le garage.** Autour d'Åsögatan/Sofia = taxa 3 : ~20 SEK/h en semaine 07–19h, samedi réduit 11–17h, **gratuit soirs/nuits/dimanche**. Voiture immobile du mercredi soir au lundi matin ≈ **600–700 SEK au total** via EasyPark.
+- ⚠️ Lire le panneau avant de laisser la voiture 5 jours : jour de **servicedag** (nettoyage) + code de zone EasyPark. Côté Götgatan = taxa 2 (plus cher) — rester côté est (Åsögatan, Skånegatan, Bondegatan).
+- Plan B : **P-hus Ringen** (Aimo Park, Götgatan 98) — 520 SEK/24h, à éviter pour 5 jours.
+- **Trängselskatt :** arrivée 29/07 = 0 SEK (juillet exonéré sauf les 5 premiers jours ouvrés). Départ lun 3/08 = taxé en tarif basse saison (~11–35 SEK/passage), facturé automatiquement à la plaque française via Epass24.
 
 ---
 
@@ -80,26 +88,20 @@ Stockholm a des lekplatser (aires de jeu) parmi les plus belles d'Europe. Toutes
 
 ---
 
-### Jour 1 — Mercredi 29 Juillet : Arrivée & Södermalm
-*Arrivée, installation, découverte à pied*
+### Jour 1 — Mercredi 29 Juillet : Route depuis Södra Kärr & Arrivée SoFo
+*~410 km (4h30 avec pause) · Check-in 16h*
 
-#### 14h–16h : Installation
-- Garez la voiture au P-Hus Medborgarplatsen — c'est sa dernière sortie avant le départ
-- Faites les courses à l'**ICA Maxi** ou **Willys** de Södermalm pour la semaine : petit-dej, pique-niques, dîner du soir
+#### ~11h : Départ Södra Kärr (E22 nord, pause pique-nique vers Västervik/Norrköping)
 
-#### 16h–18h : Monteliusvägen & Fjällgatan (gratuit)
-- **Monteliusvägen :** belvédère sur les toits de Stockholm, une des plus belles vues de la ville
-- **Fjällgatan :** 10 min à pied, vue panoramique, photo carte postale de Stockholm
+#### 16h00 : Check-in Åsögatan 190
+- Arrivée autonome, serrure connectée
+- Se garer en rue au plus près (payant jusqu'à 19h seulement, ~60 SEK) — vérifier panneau (zone EasyPark + servicedag)
 
-#### 18h30 : **Drakenbergsparken** (gratuit) 🐉
-- Le dragon géant qui crache de l'eau sur commande — arrivée idéale pour les enfants, ça brise la glace avec Stockholm
-- Dans le parc Tanto, à Södermalm
+#### 17h–19h : Courses de dépannage + premier tour de Nytorget + Vitabergsparken (5 min à pied)
 
 #### 19h30 : Dîner à l'appart 🏠
-- Courses faites à l'arrivée — repas simple suédois : *knäckebröd* (crispbread), fromages, charcuterie, harengs marinés, cornichons
-- Appréciez la lumière du soir depuis le balcon ou une terrasse de parc jusqu'à 21h
-
-> **Économie vs version expensive :** ~120 SEK vs ~600 SEK
+- Plateau suédois : *knäckebröd*, fromages, charcuterie, harengs marinés
+- Monteliusvägen et le coucher de soleil sont gardés pour le J5
 
 ---
 
@@ -268,10 +270,11 @@ Stockholm a des lekplatser (aires de jeu) parmi les plus belles d'Europe. Toutes
 
 ---
 
-### Jour 6 — Lundi 3 Août : Départ vers l'Archipel 🚗
-- Petit-déjeuner, vider le frigo, nettoyer l'appart
-- Récupérer la voiture au P-Hus
-- **Direction Vaxholm** (ou votre base archipel) — voir programme séparé Archipel 3–8 Août
+### Jour 6 — Lundi 3 Août : Départ vers Täby 🚗
+- Check-out avant 10h (frigo vidé, sacs poubelle près de la porte)
+- **Étape tampon (check-in Täby à 15h) :** Tessinparken (Östermalm, sur la route) — mini-ville 1930, pique-nique
+- **Courses semaine à l'ICA Maxi Arninge** (10 min de la maison)
+- 15h : check-in **Klövjevägen 33, Täby** — voir guide « Täby & les environs 3–8 Août »
 
 ---
 

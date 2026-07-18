@@ -639,7 +639,7 @@ function initMap(pageNum) {
           var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
           var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(m.label);
           var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(m.label);
-          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(m.label + ' London');
+          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(m.label + (TRIP.meta.searchCity ? ' ' + TRIP.meta.searchCity : ''));
 
           var popupHtml = '<div class="mp">' +
             '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' · ' + m.label + '</a></div>' +

@@ -1,0 +1,8 @@
+{
+  "name": "Södra Kärr — Loppis & Nature",
+  "short_name": "Södra Kärr",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0D0D12",
+  "theme_color": "#0D0D12"
+}

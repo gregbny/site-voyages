@@ -1,20 +1,21 @@
 const TRIP = {
   meta: {
     id: "stockholm-2026-budget",
-    title: "Stockholm — Version Maline",
+    title: "Stockholm 2026",
     flag: "🇸🇪",
-    heroEmoji: "💶",
+    heroEmoji: "🏙",
     subtitle: "Guide de voyage — Famille Bonato",
     chips: [
-      { text: "29 Jul – 3 Août", highlight: true },
+      { text: "Mer 29 Juil – Lun 3 Août", highlight: true },
       { text: "👨‍👩‍👧‍👦 2A + 2E (7 ans)" },
-      { text: "🏠 Södermalm" },
-      { text: "~740 €" }
+      { text: "🏠 SoFo — Åsögatan 190" },
+      { text: "~710 €" }
     ],
     people: ["Greg", "Sofie"],
     personTag: "♥",
-    mapCenter: [59.32, 18.07],
-    mapZoom: 12
+    mapCenter: [59.318, 18.078],
+    mapZoom: 13,
+    searchCity: "Stockholm"
   },
 
   pages: [
@@ -25,8 +26,17 @@ const TRIP = {
       id: "avant",
       tab: "✈️ Avant",
       type: "custom",
-      banner: { accent: "amber", badge: "Avant le départ", title: "Logistique & Préparation", sub: "Documents, apps, transport, aires de jeu" },
+      banner: { accent: "amber", badge: "Avant le départ", title: "Logistique & Préparation", sub: "Logement, parking, apps, transport, aires de jeu" },
       sections: [
+        { type: "label", text: "🏠 Le Logement — Airbnb SoFo" },
+        { type: "infobox", color: "violet", title: "Charming 1BR in Trendy SoFo — hôte Fredrik", items: [
+          "<b>Adresse :</b> Åsögatan 190, Södermalm (116 32) — en plein SoFo, à 350 m de Nytorget.",
+          "<b>Arrivée :</b> mercredi 29 juillet à partir de <b>16h00</b> · <b>Départ :</b> lundi 3 août avant <b>10h00</b>.",
+          "<b>Arrivée autonome — serrure connectée.</b> La procédure exacte arrive via la messagerie Airbnb ; le code wifi apparaît dans l'appli 48h avant l'arrivée.",
+          "<b>Code de réservation :</b> HM9H92MCPS.",
+          "<b>Métro :</b> Medborgarplatsen (ligne verte 17/18/19), à ~10 min à pied.",
+          "Règles : 4 voyageurs max, pas d'animaux. Au départ : sacs poubelle fermés, posés à l'intérieur près de la porte."
+        ]},
         { type: "label", text: "📋 Documents & Formalités" },
         { type: "infobox", color: "red", title: "Checklist obligatoire", items: [
           "<b>Passeports</b> valides après le 3 août · <b>CEAM</b> pour toute la famille.",
@@ -66,12 +76,17 @@ const TRIP = {
           "<b>Pluie :</b> ~13 jours sur le mois — imperméable compact obligatoire."
         ]},
         { type: "divider" },
-        { type: "label", text: "🅿️ Stationnement" },
-        { type: "infobox", color: "green", title: "Stratégie parking", items: [
-          "<b>Juillet = GRATUIT pour la taxe de congestion</b> (trängselskatt suspendue pendant les vacances scolaires suédoises).",
-          "<b>Stratégie :</b> Garez la voiture au <b>P-Hus Medborgarplatsen</b> à l'arrivée, ne la reprenez que le dernier jour.",
-          "Zones résidentielles de Södermalm : <b>gratuit après 19h et le dimanche</b>.",
-          "App <b>EasyPark</b> pour payer en rue sans aller au parcmètre."
+        { type: "label", text: "🅿️ Stationnement & Taxe de congestion" },
+        { type: "infobox", color: "green", title: "Stratégie parking — la rue, pas le garage", items: [
+          "Autour d'Åsögatan/Sofia, la rue est en <b>taxa 3</b> : ~20 SEK/h en semaine 07h–19h, tarif réduit le samedi 11h–17h, <b>gratuit les soirs, les nuits et le dimanche</b>.",
+          "<b>Stratégie :</b> se garer en rue près de l'appart à l'arrivée (mercredi 16h → payant jusqu'à 19h seulement) et ne plus toucher la voiture jusqu'à lundi. Coût total du séjour : <b>~600–700 SEK</b> payés via <b>EasyPark</b> (prolongeable à distance depuis le canapé).",
+          "<b>⚠️ Lire le panneau de la rue avant de laisser la voiture 5 jours :</b> vérifier le jour/nuit de nettoyage (<i>servicedag</i>) et le code de zone EasyPark. Les rues côté Götgatan sont en taxa 2, plus chère — rester côté est (Åsögatan, Skånegatan, Bondegatan…).",
+          "<b>Plan B si aucune place :</b> P-hus Ringen (Aimo Park, Götgatan 98) — mais 520 SEK/24h, à éviter pour 5 jours."
+        ]},
+        { type: "infobox", color: "amber", title: "Trängselskatt (péage urbain)", items: [
+          "<b>Arrivée mer 29/07 : 0 SEK</b> — en juillet la taxe est suspendue (sauf les 5 premiers jours ouvrés du mois).",
+          "<b>Départ lun 3/08 :</b> taxe active mais en <b>tarif basse saison</b> (petits montants, ~11–35 SEK par passage).",
+          "Plaque française : rien à faire sur place, les passages sont facturés automatiquement via <b>Epass24</b> (courrier/en ligne)."
         ]},
         { type: "divider" },
         { type: "label", text: "🌳 Aires de Jeu Gratuites — Les Coups de Cœur" },
@@ -113,39 +128,49 @@ const TRIP = {
       tab: "Mer. J1",
       type: "day",
       dayNumber: 1,
-      banner: { accent: "amber", badge: "Jour 1 · Mercredi 29 Juillet", title: "Arrivée & Södermalm", sub: "Installation → Monteliusvägen → Fjällgatan → Drakenbergsparken" },
+      banner: { accent: "amber", badge: "Jour 1 · Mercredi 29 Juillet", title: "Arrivée & SoFo", sub: "Route depuis Södra Kärr → Check-in 16h → Nytorget → Vitabergsparken" },
       timeline: [
         {
-          time: "14h00\n16h00",
-          title: "🏠 Installation",
+          time: "~11h00",
+          title: "🚗 Départ de Södra Kärr",
           items: [
-            { text: "Garez la voiture au <b>P-Hus Medborgarplatsen</b> — c'est sa dernière sortie avant le départ." },
-            { text: "Faites les courses à l'<b>ICA Maxi</b> ou <b>Willys</b> de Södermalm pour la semaine : petit-déj, pique-niques, dîner du soir.", type: "tip" }
+            { text: "~410 km, comptez <b>4h30 avec une vraie pause</b> (E22 vers le nord)." },
+            { text: "Pause déjeuner pique-nique ou aire de repos vers Västervik / Norrköping.", type: "tip" },
+            { text: "Trängselskatt à l'entrée de Stockholm : <b>0 SEK en juillet</b> — rien à payer.", type: "sub" }
           ]
         },
         {
-          time: "16h00\n18h00",
-          title: "🏔 Monteliusvägen & Fjällgatan (gratuit)",
+          time: "16h00",
+          title: "🏠 Check-in — Åsögatan 190",
           items: [
-            { text: "<b>Monteliusvägen :</b> belvédère sur les toits de Stockholm, une des plus belles vues de la ville." },
-            { text: "<b>Fjällgatan :</b> 10 min à pied, vue panoramique, photo carte postale de Stockholm." }
+            { text: "Arrivée autonome, <b>serrure connectée</b> — procédure dans la messagerie Airbnb, wifi dans l'appli." },
+            { text: "Se garer en rue au plus près : payant seulement jusqu'à 19h ce soir (~60 SEK via EasyPark), puis la voiture ne bouge plus.", type: "tip" },
+            { text: "Vérifier le panneau : code zone EasyPark + jour de <i>servicedag</i>.", type: "warn" }
           ]
         },
         {
-          time: "18h30",
-          title: "🐉 Drakenbergsparken (gratuit)",
+          time: "17h00",
+          title: "🛒 Courses du soir & repérage SoFo",
           items: [
-            { text: "Le dragon géant qui crache de l'eau sur commande — arrivée idéale pour les enfants, ça brise la glace avec Stockholm." },
-            { text: "Dans le parc Tanto, à Södermalm.", type: "sub" }
+            { text: "Supermarché du quartier (Coop/Hemköp autour de Skånegatan–Ringen) pour le petit-déj et le dîner — le gros plein malin se fera au fil des jours." },
+            { text: "Premier tour de <b>Nytorget</b>, la place la plus cool de Stockholm, à 350 m de l'appart.", type: "tip" }
+          ]
+        },
+        {
+          time: "18h00",
+          title: "🌿 Vitabergsparken (gratuit)",
+          items: [
+            { text: "Le grand parc de colline de SoFo, à 5 min à pied : aire de jeu, pelouses, vue." },
+            { text: "Les enfants se dégourdissent après la route, vous soufflez sur un banc." }
           ]
         },
         {
           time: "19h30",
           title: "🏠 Dîner à l'appart",
           items: [
-            { text: "Courses faites à l'arrivée — repas simple suédois : <i>knäckebröd</i> (crispbread), fromages, charcuterie, harengs marinés, cornichons." },
-            { text: "Appréciez la lumière du soir depuis le balcon ou une terrasse de parc jusqu'à 21h.", type: "tip" },
-            { text: "Économie vs version expensive : ~120 SEK vs ~600 SEK.", type: "sub" }
+            { text: "Repas simple suédois : <i>knäckebröd</i> (crispbread), fromages, charcuterie, harengs marinés, cornichons." },
+            { text: "Appréciez la lumière du soir — il fait clair jusqu'à ~21h15.", type: "tip" },
+            { text: "Monteliusvägen et le grand coucher de soleil sont gardés pour le J5.", type: "sub" }
           ]
         }
       ]
@@ -462,21 +487,39 @@ const TRIP = {
       tab: "Lun. J6",
       type: "day",
       dayNumber: 6,
-      banner: { accent: "amber", badge: "Jour 6 · Lundi 3 Août", title: "Départ vers l'Archipel", sub: "Petit-déj → Voiture → Direction Vaxholm" },
+      banner: { accent: "amber", badge: "Jour 6 · Lundi 3 Août", title: "Départ vers Täby", sub: "Check-out 10h → Tessinparken → Courses Arninge → Check-in 15h" },
       timeline: [
         {
-          time: "09h00",
-          title: "☕ Petit-déjeuner & rangement",
+          time: "09h00\n10h00",
+          title: "☕ Petit-déjeuner & check-out",
           items: [
-            { text: "Vider le frigo, nettoyer l'appart." },
-            { text: "Récupérer la voiture au P-Hus Medborgarplatsen." }
+            { text: "Vider le frigo, sacs poubelle fermés près de la porte, check-out avant <b>10h00</b>." },
+            { text: "Reprendre la voiture — payer la rue via EasyPark à partir de 07h si vous partez après.", type: "sub" },
+            { text: "Trängselskatt active aujourd'hui (tarif basse saison, quelques dizaines de SEK) — facturée automatiquement via Epass24, rien à faire.", type: "sub" }
           ]
         },
         {
-          time: "10h00",
-          title: "🚗 Départ !",
+          time: "10h30\n13h00",
+          title: "🏗 Tessinparken — l'étape tampon parfaite",
           items: [
-            { text: "<b>Direction Vaxholm</b> (ou votre base archipel) — voir programme séparé Archipel 3–8 Août." }
+            { text: "Le check-in à Täby n'est qu'à 15h — Tessinparken (Östermalm) est pile sur la route du nord." },
+            { text: "Mini-ville années 1930, grue, tram vintage — l'aire de jeu unique qu'on n'a pas encore faite.", type: "tip" },
+            { text: "Pique-nique sur place avec les restes du frigo." }
+          ]
+        },
+        {
+          time: "13h30\n14h45",
+          title: "🛒 ICA Maxi Arninge (Täby)",
+          items: [
+            { text: "Grand hypermarché à 10 min de la maison — les courses de la semaine Täby : petit-déj, pique-niques, dîners, saucisses à griller." },
+            { text: "Kundvägen 1E, Arninge — parking gratuit.", type: "sub" }
+          ]
+        },
+        {
+          time: "15h00",
+          title: "🏡 Check-in — Klövjevägen 33, Täby",
+          items: [
+            { text: "<b>Direction la maison de Täby</b> — voir le guide séparé « Täby & les environs · 3–8 Août »." }
           ]
         }
       ]
@@ -497,7 +540,7 @@ const TRIP = {
             {
               label: "🍽 Quand on sort",
               cards: [
-                { emoji: "🍖", name: "Pelikan", addr: "Blekingegatan 40, Södermalm", price: "~250 SEK/pers", color: "amber", body: "L'unique grand dîner du séjour. <i>Köttbullar</i> maison, purée, sauce brune — le classique absolu. Cadre brasserie historique suédoise.", verdict: "Réservation obligatoire. ~800–1 000 SEK pour 4.", mapsQuery: "Pelikan+Blekingegatan+40+Stockholm" },
+                { emoji: "🍖", name: "Pelikan", addr: "Blekingegatan 40, Södermalm", price: "~250 SEK/pers", color: "amber", body: "L'unique grand dîner du séjour. <i>Köttbullar</i> maison, purée, sauce brune — le classique absolu. Cadre brasserie historique suédoise. À 15 min à pied de l'appart.", verdict: "Réservation obligatoire. ~800–1 000 SEK pour 4.", warn: "Vérifier les horaires d'été avant de réserver — certaines brasseries ferment quelques semaines fin juillet.", mapsQuery: "Pelikan+Blekingegatan+40+Stockholm" },
                 { emoji: "🍕", name: "Teatern", addr: "Skanstull, Södermalm", price: "~130–180 SEK/pers", color: "coral", body: "Food hall à Skanstull — plusieurs stands, chacun choisit son plat. Lunch ou dîner casual, ambiance détendue.", verdict: "Anti-dispute familiale : chacun son choix, même table.", mapsQuery: "Teatern+Hornstulls+Strand+Stockholm" },
                 { emoji: "🥙", name: "Falafel Götgatan", addr: "Götgatan, Södermalm", price: "~80 SEK/pers", color: "emerald", body: "Sandwich rapide et bon marché sur l'artère principale de Södermalm. Idéal pour un déjeuner express.", verdict: "Le plus économique quand on mange dehors.", mapsQuery: "Falafel+Götgatan+Stockholm" },
                 { emoji: "🍲", name: "Dagens Lunch", addr: "Partout en ville", price: "~130–160 SEK/pers", color: "neutral", body: "Le <i>dagens lunch</i> (menu du jour, 11h–14h en semaine) : soupe + pain + café inclus. Le rapport qualité-prix est imbattable le midi en Suède.", verdict: "Menu enfant ~80 SEK. ~500–600 SEK pour 4." },
@@ -544,12 +587,12 @@ const TRIP = {
             {
               label: "🌳 Lekplatser gratuites",
               cards: [
-                { emoji: "🐉", name: "Drakenbergsparken", addr: "Tanto, Södermalm", color: "teal", body: "Dragon géant qui crache de l'eau, bouton à actionner — les enfants sont dingues. Dans le parc Tanto.", verdict: "5 min à pied — le coup de cœur absolu.", mapsQuery: "Drakenbergsparken+Stockholm" },
-                { emoji: "🧗", name: "Ivar Los Park", addr: "Mariaberget, Södermalm", color: "teal", body: "Inspiré d'Astrid Lindgren. Escalade, toboggan, vue panoramique sur Stockholm.", verdict: "5 min à pied.", mapsQuery: "Ivar+Los+Park+Stockholm" },
-                { emoji: "🌿", name: "Vitabergsparken", addr: "Södermalm", color: "teal", body: "Colline avec jeux, théâtre en plein air l'été, vue superbe. Concerts gratuits le vendredi soir.", verdict: "5 min à pied.", mapsQuery: "Vitabergsparken+Stockholm" },
-                { emoji: "🏖", name: "Tanto / Tantolunden", addr: "Södermalm", color: "teal", body: "Grand parc avec jeux, toboggans, plage sur le Mälaren, minigolf. Jardins ouvriers aux maisonnettes colorées.", verdict: "8 min à pied.", mapsQuery: "Tantolunden+Stockholm" },
+                { emoji: "🐉", name: "Drakenbergsparken", addr: "Tanto, Södermalm", color: "teal", body: "Dragon géant qui crache de l'eau, bouton à actionner — les enfants sont dingues. Dans le parc Tanto.", verdict: "~25 min à pied ou quelques arrêts de bus — le coup de cœur absolu.", mapsQuery: "Drakenbergsparken+Stockholm" },
+                { emoji: "🧗", name: "Ivar Los Park", addr: "Mariaberget, Södermalm", color: "teal", body: "Inspiré d'Astrid Lindgren. Escalade, toboggan, vue panoramique sur Stockholm.", verdict: "~20 min à pied, côté Mariaberget.", mapsQuery: "Ivar+Los+Park+Stockholm" },
+                { emoji: "🌿", name: "Vitabergsparken", addr: "Södermalm", color: "teal", body: "Colline avec jeux, théâtre en plein air l'été, vue superbe. Concerts gratuits le vendredi soir.", verdict: "5 min à pied de l'appart — le parc du quotidien.", mapsQuery: "Vitabergsparken+Stockholm" },
+                { emoji: "🏖", name: "Tanto / Tantolunden", addr: "Södermalm", color: "teal", body: "Grand parc avec jeux, toboggans, plage sur le Mälaren, minigolf. Jardins ouvriers aux maisonnettes colorées.", verdict: "~25 min à pied ou bus.", mapsQuery: "Tantolunden+Stockholm" },
                 { emoji: "🎨", name: "Bryggartäppan", addr: "Södermalm", color: "neutral", body: "Aire thématique, imaginative, calme. Idéale pour les plus petits aussi.", verdict: "8 min à pied.", mapsQuery: "Bryggartäppan+Stockholm" },
-                { emoji: "🎢", name: "Stora Blecktornsparken", addr: "Södermalm", color: "teal", body: "Tyrolienne (cableway), animaux, ping-pong, basketball. Les enfants adorent la tyrolienne.", verdict: "8 min à pied.", mapsQuery: "Stora+Blecktornsparken+Stockholm" },
+                { emoji: "🎢", name: "Stora Blecktornsparken", addr: "Södermalm", color: "teal", body: "Tyrolienne (cableway), animaux, ping-pong, basketball. Les enfants adorent la tyrolienne.", verdict: "8 min à pied de l'appart.", mapsQuery: "Stora+Blecktornsparken+Stockholm" },
                 { emoji: "💦", name: "Rålambshovsparken (Rålis)", addr: "Kungsholmen", color: "violet", body: "Splash pad, structures de grimpe, théâtre été — top des top. Le meilleur pour les journées chaudes.", verdict: "15 min en SL.", mapsQuery: "Rålambshovsparken+Stockholm" },
                 { emoji: "🏗", name: "Tessinparken", addr: "Östermalm", color: "violet", body: "Mini-ville en style 1930, grue, tram vintage — unique en son genre.", verdict: "15 min en SL.", mapsQuery: "Tessinparken+Stockholm" }
               ]
@@ -581,14 +624,15 @@ const TRIP = {
       id: "budget",
       tab: "💰 Budget",
       type: "budget",
-      banner: { accent: "emerald", badge: "Budget", title: "Version Maline — ~740 €", sub: "Hors hébergement et transport aller-retour" },
+      banner: { accent: "emerald", badge: "Budget", title: "Version Maline — ~710 €", sub: "Hors hébergement et transport aller-retour" },
       tables: [
         {
           label: "🚇 Transport & Parking",
           headers: ["Poste", "Détail", "Coût (SEK)", "Coût (€)"],
           rows: [
             ["Transport SL", "2 passes 7j adultes", "1 000 SEK", "~91 €"],
-            ["Parking P-Hus", "5 jours × ~200 SEK/j", "1 000 SEK", "~91 €"]
+            ["Parking rue (taxa 3)", "Payant seulement en journée semaine + samedi", "~700 SEK", "~64 €"],
+            ["Trängselskatt", "Départ lun 3/08 (basse saison, via Epass24)", "~40 SEK", "~4 €"]
           ]
         },
         {
@@ -623,7 +667,7 @@ const TRIP = {
           label: "📊 Total",
           headers: ["", "Total"],
           rows: [],
-          footer: ["TOTAL", "~8 100 SEK (~737 €)"]
+          footer: ["TOTAL", "~7 850 SEK (~710 €)"]
         }
       ],
       note: "Économie vs version expensive : ~1 100 € → ~740 € = environ 360 € économisés. Vous gardez le meilleur (Junibacken, Vasa, Fotografiska, Pelikan) et vous supprimez l'ABBA Museum (~82 €), Gröna Lund (~90 €) et les dîners restaurant tous les soirs."
@@ -631,17 +675,17 @@ const TRIP = {
   ],
 
   mapData: {
-    1: { center:[59.318, 18.062], zoom:14, pts:[
-      { p:[59.3183, 18.0510], label:'🏔 Monteliusvägen' },
-      { p:[59.3145, 18.0640], label:'📸 Fjällgatan' },
-      { p:[59.3120, 18.0495], label:'🐉 Drakenbergsparken' }
+    1: { center:[59.3145, 18.083], zoom:15, pts:[
+      { p:[59.3145, 18.0909], label:'🏠 Airbnb — Åsögatan 190' },
+      { p:[59.3155, 18.0818], label:'☕ Nytorget' },
+      { p:[59.3138, 18.0788], label:'🌿 Vitabergsparken' }
     ]},
     2: { center:[59.326, 18.095], zoom:13, pts:[
       { p:[59.3267, 18.0917], label:'⭐ Junibacken' },
       { p:[59.3280, 18.0913], label:'🚢 Vasamuseet' },
       { p:[59.3256, 18.0960], label:'🌿 Djurgården' },
       { p:[59.3305, 18.0540], label:'🎢 Rålambshovsparken' },
-      { p:[59.3145, 18.0745], label:'🍽 Pelikan' }
+      { p:[59.3106, 18.0762], label:'🍽 Pelikan' }
     ]},
     3: { center:[59.325, 18.070], zoom:13, pts:[
       { p:[59.3258, 18.0706], label:'🏰 Gamla Stan' },
@@ -659,8 +703,13 @@ const TRIP = {
       { p:[59.3185, 18.0777], label:'🌅 Mosebacke' },
       { p:[59.3125, 18.0830], label:'🎢 Stora Blecktornsparken' },
       { p:[59.3183, 18.0510], label:'🌇 Monteliusvägen' }
+    ]},
+    6: { center:[59.39, 18.09], zoom:11, pts:[
+      { p:[59.3433, 18.0954], label:'🏗 Tessinparken' },
+      { p:[59.4621, 18.1297], label:'🛒 ICA Maxi Arninge' },
+      { p:[59.4451, 18.0514], label:'🏡 Maison Täby — Klövjevägen 33' }
     ]}
   },
 
-  dayColors: { 1:'#F59E0B', 2:'#F97316', 3:'#7C3AED', 4:'#0D9488', 5:'#059669' }
+  dayColors: { 1:'#F59E0B', 2:'#F97316', 3:'#7C3AED', 4:'#0D9488', 5:'#059669', 6:'#64748B' }
 };
