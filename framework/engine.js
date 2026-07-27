@@ -452,9 +452,12 @@ function scrollPastHero(isMap) {
     window.scrollTo(0, 0);
     return;
   }
-  var tabs = document.querySelector('.tabs-wrap');
-  if (!tabs) return;
-  var go = function() { tabs.scrollIntoView({ block: 'start', behavior: 'instant' }); };
+  // The tab bar is position:fixed (out of flow), so we scroll the pages
+  // container to the top instead — its scroll-margin-top keeps content clear
+  // of the fixed bar.
+  var target = document.querySelector('.pages-outer');
+  if (!target) return;
+  var go = function() { target.scrollIntoView({ block: 'start', behavior: 'instant' }); };
   go();
   requestAnimationFrame(go);
   setTimeout(go, 80);

@@ -70,10 +70,17 @@ body {
 /* ============================================================
    STICKY NAV TABS — Brut
    ============================================================ */
+/* #app reserves space for the fixed tab bar so the hero isn't hidden under it.
+   --tabs-h is measured at runtime (engine.js) and matches the bar height exactly. */
+#app { padding-top: var(--tabs-h, 45px); }
+
 .tabs-wrap {
   background: var(--ink);
   border-bottom: 1px solid rgba(255,255,255,0.07);
-  position: sticky; top: 0; z-index: 200;
+  /* fixed (not sticky): position: sticky silently falls back to static in
+     iOS standalone PWAs with this swipe/View-Transitions setup, letting the bar
+     scroll away. fixed pins it to the viewport reliably everywhere. */
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
   overflow-x: auto; white-space: nowrap;
   scrollbar-width: none;
   padding: 10px 20px;
@@ -101,7 +108,8 @@ body {
 /* ============================================================
    PAGE SYSTEM — SLIDER
    ============================================================ */
-.pages-outer { overflow: hidden; }
+/* scroll-margin-top lets scrollIntoView land content just below the fixed bar. */
+.pages-outer { overflow: hidden; scroll-margin-top: var(--tabs-h, 45px); }
 .pages-wrap { display: flex; will-change: transform; }
 .page { flex: 0 0 100vw; min-width: 0; padding-bottom: 48px; }
 .hero { transition: opacity 0.2s; }
