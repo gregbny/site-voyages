@@ -181,6 +181,17 @@ const TRIP = {
           items: [
             { text: "<i>Grillkorv</i> (saucisses) au barbecue, salade de pommes de terre à l'aneth, lingonberry." }
           ]
+        },
+        {
+          time: "🎤 Option",
+          title: "🎶 Allsång på Skansen — c'est ce soir ou jamais",
+          items: [
+            { text: "<b>Le grand concert-karaoké national se tient les mardis soir à Skansen</b>, et la saison se termine le 11 août. <b>Ce mardi 4 août est notre seule occasion du voyage</b> — il n'y a pas de mardi pendant la semaine à Stockholm." },
+            { text: "45 min de route depuis Täby. Ça se remplit — <b>réserver à l'avance</b>.", type: "sub" },
+            { text: "Tarifs : ~50 € adulte, 10–15 € enfant. Pour quatre, ça chiffre vite.", type: "sub" },
+            { text: "<b>Demander à Isabelle avant de payer</b> — elle aurait assisté à une répétition gratuitement. À vérifier : peut-être écoutaient-ils de plus loin, sans place assise.", type: "warn" },
+            { text: "Si on y va, Vaxholm devient une demi-journée et on rentre tôt.", type: "sub" }
+          ]
         }
       ],
       rainPlans: [
@@ -308,8 +319,9 @@ const TRIP = {
           time: "16h30\n18h00",
           title: "🫐 Myrtilles à Stolpaskogen",
           items: [
-            { text: "Retour par la forêt : cueillette de myrtilles (pleine saison, c'est gratuit et légal — <i>allemansrätten</i>)." },
-            { text: "Elles finiront sur les crêpes du soir.", type: "tip" }
+            { text: "Retour par la forêt : cueillette de myrtilles, gratuite et légale partout (<i>allemansrätten</i>)." },
+            { text: "<b>Début août, c'est la fin de saison</b> — il y en aura, mais moins qu'en juillet. Si la récolte est maigre ici, on aura déjà cueilli à Södra Kärr.", type: "warn" },
+            { text: "Elles finiront sur les <i>pannkakor</i> du soir — ce sont des crêpes, pas des pancakes.", type: "tip" }
           ]
         },
         {
@@ -363,15 +375,18 @@ const TRIP = {
           ]
         },
         {
-          time: "14h00\n16h00",
-          title: "🌊 Le lac Mälaren",
+          time: "14h00\n17h00",
+          title: "🏊 Baignade — le vrai programme de l'après-midi",
           items: [
-            { text: "Promenade du bord du lac (Strandpromenaden), pontons, canards, bateaux — pas de marée, eaux calmes." },
-            { text: "Trempette possible pour les enfants près de la plage du parc.", type: "sub" }
+            { text: "<b>C'est la journée type qu'on voulait :</b> on visite et on déjeune à Sigtuna le matin, puis on trouve un lac et on se baigne tout l'après-midi." },
+            { text: "<b>Sur place :</b> la plage du bord du Mälaren à Sigtuna même (Strandpromenaden) — pontons, pelouse, eau calme, accessible à pied depuis Stora Gatan." },
+            { text: "<b>Mieux, sur la route du retour :</b> <b>Garnsviken</b> ou les plages du Mälaren côté Sigtuna–Rosersberg — moins de monde, fond en pente douce.", type: "sub" },
+            { text: "Ou rentrer se baigner à <b>Skavlöten</b> (Rönningesjön, à 10 min de la maison) si les enfants préfèrent le connu.", type: "sub" },
+            { text: "Serviettes et maillots dans la voiture <b>dès le matin</b> — sinon la baignade ne se fait pas.", type: "warn" }
           ]
         },
         {
-          time: "16h30",
+          time: "17h30",
           title: "🚗 Retour Täby",
           items: [
             { text: "Derniers achats souvenirs faits à Sigtuna — céramique, confitures artisanales, c'est local et pas touristique.", type: "tip" }

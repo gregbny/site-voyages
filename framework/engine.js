@@ -361,13 +361,19 @@ function renderFullmapPage(page, pageIndex) {
   html += '<div style="position:relative">';
   html += '<div id="map-full"></div>';
 
+  var carnetMode = !!(TRIP.carnet && TRIP.carnet.length);
+
   html += '<div class="map-toggles">';
-  html += '<div class="tog-row">';
-  dayKeys.forEach(function(day) {
-    html += '<button class="tog" id="tog' + day + '" onclick="toggleDay(' + day + ')"><span class="dot" style="background:' + dayColors[day] + '"></span>J' + day + '</button>';
-  });
-  html += '</div>';
-  html += '<div class="tog-sep"></div>';
+  // Day toggles only make sense when the fullmap shows day itineraries.
+  // In carnet mode the fullmap has no day points, so we hide the day row.
+  if (!carnetMode) {
+    html += '<div class="tog-row">';
+    dayKeys.forEach(function(day) {
+      html += '<button class="tog" id="tog' + day + '" onclick="toggleDay(' + day + ')"><span class="dot" style="background:' + dayColors[day] + '"></span>J' + day + '</button>';
+    });
+    html += '</div>';
+    html += '<div class="tog-sep"></div>';
+  }
   html += '<div class="tog-row tog-row-wrap">';
   Object.keys(catColors).forEach(function(cat) {
     html += '<button class="tog" id="togcat-' + cat + '" onclick="toggleCat(\'' + cat + '\')"><span class="dot" style="background:' + catColors[cat] + '"></span>' + (catLabels[cat] || cat) + '</button>';
@@ -596,6 +602,31 @@ function createPillEl(label, color) {
   return el;
 }
 
+/* Build one fullmap marker (pill + popup) and register it for day/cat filtering.
+   prefix (e.g. "J2") is prepended to the popup title; '' for carnet points. */
+function buildFullmapMarker(map, m, color, dayFilter, prefix) {
+  var pillEl = createPillEl(m.label, color);
+  var lat = m.p[0], lng = m.p[1];
+  var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
+  var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(m.label);
+  var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(m.label);
+  var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(m.label + (TRIP.meta.searchCity ? ' ' + TRIP.meta.searchCity : ''));
+  var name = (prefix ? prefix + ' · ' : '') + m.label;
+  var popupHtml = '<div class="mp">' +
+    '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">' + name + '</a></div>' +
+    '<div class="mp-links">' +
+      '<a class="mp-btn" href="' + gUrl + '" target="_blank">🗺 Google</a>' +
+      '<a class="mp-btn" href="' + aUrl + '" target="_blank">🍎 Apple</a>' +
+      '<a class="mp-btn" href="' + cUrl + '" target="_blank">🚇 City</a>' +
+    '</div></div>';
+  var popup = new maplibregl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
+  var marker = new maplibregl.Marker({ element: pillEl, anchor: 'center' })
+    .setLngLat(toLngLat(m.p))
+    .setPopup(popup)
+    .addTo(map);
+  mapState.markers.push({ marker: marker, day: dayFilter, cat: m.cat || 'other' });
+}
+
 /* ── Mapbox map initialization ── */
 
 function initMap(pageNum) {
@@ -629,38 +660,26 @@ function initMap(pageNum) {
     dayKeys.forEach(function(day) { mapState.days[parseInt(day)] = true; });
 
     map.on('load', function() {
-      dayKeys.forEach(function(dayStr) {
-        var day = parseInt(dayStr);
-        var d = TRIP.mapData[day];
-        if (!d) return;
-        var fallbackColor = TRIP.dayColors[day];
-        d.pts.forEach(function(m) {
-          var color = (m.cat && catColors[m.cat]) ? catColors[m.cat] : fallbackColor;
-          var pillEl = createPillEl(m.label, color);
-
-          var lat = m.p[0], lng = m.p[1];
-          var gUrl = 'https://maps.google.com/?q=' + lat + ',' + lng;
-          var aUrl = 'https://maps.apple.com/?ll=' + lat + ',' + lng + '&q=' + encodeURIComponent(m.label);
-          var cUrl = 'https://citymapper.com/directions?endcoord=' + lat + ',' + lng + '&endname=' + encodeURIComponent(m.label);
-          var gSearch = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(m.label + (TRIP.meta.searchCity ? ' ' + TRIP.meta.searchCity : ''));
-
-          var popupHtml = '<div class="mp">' +
-            '<div class="mp-name"><a href="' + gSearch + '" target="_blank" style="color:inherit;text-decoration:none;border-bottom:1.5px solid rgba(0,0,0,0.2)">J' + day + ' · ' + m.label + '</a></div>' +
-            '<div class="mp-links">' +
-              '<a class="mp-btn" href="' + gUrl + '" target="_blank">🗺 Google</a>' +
-              '<a class="mp-btn" href="' + aUrl + '" target="_blank">🍎 Apple</a>' +
-              '<a class="mp-btn" href="' + cUrl + '" target="_blank">🚇 City</a>' +
-            '</div></div>';
-
-          var popup = new maplibregl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
-          var marker = new maplibregl.Marker({ element: pillEl, anchor: 'center' })
-            .setLngLat(toLngLat(m.p))
-            .setPopup(popup)
-            .addTo(map);
-
-          mapState.markers.push({ marker: marker, day: day, cat: m.cat || 'other' });
+      if (TRIP.carnet && TRIP.carnet.length) {
+        // Fullmap = carnet complet (ex : KML de Sophie), filtré par catégorie.
+        // Les mini-cartes des journées gardent leur propre mapData, intacte.
+        mapState.days['_all'] = true;
+        TRIP.carnet.forEach(function(m) {
+          var color = (m.cat && catColors[m.cat]) ? catColors[m.cat] : '#6B7280';
+          buildFullmapMarker(map, m, color, '_all', '');
         });
-      });
+      } else {
+        dayKeys.forEach(function(dayStr) {
+          var day = parseInt(dayStr);
+          var d = TRIP.mapData[day];
+          if (!d) return;
+          var fallbackColor = TRIP.dayColors[day];
+          d.pts.forEach(function(m) {
+            var color = (m.cat && catColors[m.cat]) ? catColors[m.cat] : fallbackColor;
+            buildFullmapMarker(map, m, color, day, 'J' + day);
+          });
+        });
+      }
     });
 
     // Geolocation

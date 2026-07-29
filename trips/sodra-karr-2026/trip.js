@@ -6,7 +6,7 @@ const TRIP = {
     heroEmoji: "🧺",
     subtitle: "Guide de voyage — Famille Bonato",
     chips: [
-      { text: "Jeu 23 – Mer 29 Juillet", highlight: true },
+      { text: "23–29 Juil · 8–10 Août", highlight: true },
       { text: "👨‍👩‍👧‍👦 Famille + beaux-parents" },
       { text: "🏡 Maison familiale" },
       { text: "🧺 Loppis & nature" }
@@ -32,10 +32,12 @@ const TRIP = {
           "<b>Tablettes chargées</b> + films/séries <b>téléchargés la veille</b> (pas de wifi fiable en route).",
           "Snacks + gourdes remplies, sacs à portée de main.",
           "<b>Pause toutes les 2h</b> — viser les aires avec jeux.",
-          "Papiers du bateau + <b>passeports</b> dans la boîte à gants, pas dans le coffre."
+          "Papiers du bateau + <b>cartes d'identité</b> dans la boîte à gants, pas dans le coffre. <b>Pas besoin de passeport</b> — on est européens, la CNI suffit partout (Allemagne, Danemark, Suède).",
+          "<b>CEAM</b> pour toute la famille — la seule vraie formalité du voyage."
         ]},
         { type: "label", text: "⛴ Jeudi soir — le bateau" },
-        { type: "infobox", color: "violet", title: "Embarquement & nuit à bord", items: [
+        { type: "infobox", color: "violet", title: "Nils Holgersson — départ 21h30", items: [
+          "<b>Travemünde → Trelleborg</b>, embarquement jeudi 23 juillet, <b>départ 21h30</b>, arrivée au petit matin.",
           "Arriver <b>~1h avant l'embarquement</b> — la file des voitures est longue en été.",
           "Monter en cabine avec un <b>petit sac nuit</b> préparé (pyjamas, brosses à dents, affaires du matin) — on ne redescend pas à la voiture pendant la traversée.",
           "Dîner à bord : réserver tôt ou prévoir un pique-nique de cabine.",
@@ -72,6 +74,14 @@ const TRIP = {
           { emoji: "⚓", name: "Port de Bergkvara", addr: "Bergkvara hamn", color: "amber", body: "Bateaux de pêche, promenade du soir, glace sur le quai. L'un des plus vieux ports de commerce de la Baltique.", verdict: "Idéal en fin de journée.", mapsQuery: "Bergkvara+hamn" },
           { emoji: "🏯", name: "Kristianopel", addr: "~10 min au sud (Blekinge)", color: "violet", body: "Minuscule village fortifié dans ses <b>remparts du 17e siècle</b> : roses trémières, port de plaisance, café et glace. Une balade d'1h parfaite.", verdict: "Le détour charmant du coin.", mapsQuery: "Kristianopel" }
         ]},
+        { type: "label", text: "🍤 Les sorties à deux" },
+        { type: "infobox", color: "coral", title: "Ce qui marche vraiment ici", items: [
+          "<b>Södra Kärr, c'est la campagne.</b> Ce n'est pas la hype et ça ne le sera pas — chercher le trendy à trois heures de Stockholm, c'est la déception assurée.",
+          "<b>Ce qui marche :</b> la petite terrasse à l'arrière du restaurant de poisson, celle où on avait déjà mangé. C'était exactement ça — simple, en bord d'eau, sans prétention. <i>À retrouver : c'était du côté du port de Bergkvara.</i>",
+          "<b>Ce qui ne marche pas :</b> la glace à la ferme (on regrette de ne pas avoir pris les enfants), et le restaurant sur Öland à deux heures de route pour un prix indécent.",
+          "<b>Le bon format :</b> un <b>déjeuner</b> à deux plutôt qu'un dîner. Une bière à midi passe, on se balade après, et personne ne conduit deux heures en fin de soirée.",
+          "Les beaux-parents gardent les enfants — autant que ce soit un vrai moment, mais un moment modeste."
+        ]},
         { type: "label", text: "🌲 Nature & jardin" },
         { type: "infobox", color: "teal", title: "Les classiques de l'été suédois", items: [
           "<b>Myrtilles :</b> pleine saison fin juillet — cueillette libre en forêt (<i>allemansrätten</i>), prévoir des petits pots.",
@@ -101,8 +111,14 @@ const TRIP = {
         ]},
         { type: "label", text: "📍 Les valeurs sûres du coin" },
         { type: "cards", items: [
+          { emoji: "🧺", name: "Norrbygdens Loppis", addr: "À confirmer sur place", price: "—", color: "coral", body: "<b>Noté au programme pour le dimanche 26 juillet.</b> C'est celui que Sofie veut faire — le grand, celui installé dans la grange.", verdict: "Le rendez-vous du dimanche.", warn: "Vérifier l'adresse exacte et les horaires en arrivant — les beaux-parents sauront.", person: "Sofie", mapsQuery: "Norrbygdens+Loppis" },
           { emoji: "🏫", name: "Loppisskolan", addr: "Påboda (12 min de la maison)", color: "coral", body: "Un loppis géant installé dans <b>une ancienne école</b> : salles entières de meubles, vaisselle, livres, jouets, dans un décor d'époque.", verdict: "L'institution locale — à 12 min de la maison.", warn: "Horaires variables : appeler le 070-581 51 61.", mapsQuery: "Loppisskolan+Påboda" },
           { emoji: "🗓", name: "Agenda des loppis & marchés", addr: "Commune de Torsås", color: "neutral", body: "Le calendrier d'été de la commune (loppis, marchés, concerts) : <b>visittorsas.se/evenemang</b>. Pour la région Kalmar : <b>svenskaloppisar.se</b>.", verdict: "Un coup d'œil le vendredi soir pour planifier le samedi." }
+        ]},
+        { type: "infobox", color: "amber", title: "Ne pas confondre avec Stockholm", items: [
+          "<b>Ici, ce sont les vrais loppis</b> : granges, jardins, garages, panneaux peints à la main en bord de route.",
+          "À Stockholm, ce qu'on appelle « loppis » en ville, ce sont en fait des <b>chaînes caritatives</b> (Myrorna, Stadsmission) — l'équivalent d'Emmaüs. Bien, mais ce n'est pas du tout le même plaisir.",
+          "<b>C'est ici qu'on trouve les vraies choses.</b>"
         ]},
         { type: "label", text: "🎯 Missions enfants" },
         { type: "infobox", color: "green", title: "Pour les jumeaux", items: [
@@ -146,7 +162,48 @@ const TRIP = {
     },
 
     /* ================================================================
-       PAGE 4 — CARTE
+       PAGE 4 — LE RETOUR (8 → 12 août)
+       ================================================================ */
+    {
+      id: "retour",
+      tab: "🔙 Retour",
+      type: "custom",
+      banner: { accent: "violet", badge: "8 → 12 Août", title: "Le Retour", sub: "Deux nuits à Södra Kärr → ferry de nuit → Allemagne → Paris" },
+      sections: [
+        { type: "infobox", color: "amber", title: "Le calendrier", items: [
+          "<b>Samedi 8 août :</b> départ de Täby avant 11h, route vers Södra Kärr (~5h30, 480 km). Dernière soirée chez les beaux-parents.",
+          "<b>Dimanche 9 août :</b> journée tampon à Södra Kärr — au calme, plage, dernier loppis si le cœur y est.",
+          "<b>Lundi 10 août :</b> route vers Trelleborg (~1h30) · <b>Nils Holgersson, départ 23h30</b>.",
+          "<b>Mardi 11 août :</b> débarquement à Travemünde au petit matin, puis route vers Paris.",
+          "<b>Mercredi 12 août :</b> journée de récupération. <b>Jeudi 13 :</b> retour au travail."
+        ]},
+        { type: "label", text: "🥐 La tradition du petit-déjeuner allemand" },
+        { type: "infobox", color: "coral", title: "Deuxième fois = ça devient une tradition", items: [
+          "Au débarquement à Travemünde, on refait <b>le même petit-déjeuner</b> que la dernière fois.",
+          "<b>Le principe est acté :</b> « il faut au moins y aller deux fois pour que ce soit une tradition — trois fois, ça la confirme ». C'est donc la deuxième.",
+          "<b>À faire avant de partir :</b> retrouver le nom et l'adresse de l'endroit (photos du voyage précédent, historique Google Maps, relevés bancaires).",
+          "Prévoir que tout le monde aura faim et sera fatigué : le ferry arrive tôt et la nuit à bord est courte."
+        ]},
+        { type: "label", text: "⛴ Le ferry de nuit — départ 23h30" },
+        { type: "infobox", color: "violet", title: "Trelleborg → Travemünde", items: [
+          "<b>Départ très tardif</b> — les enfants seront couchés dans la cabine avant même l'appareillage. Prévoir le pyjama <b>avant</b> d'embarquer.",
+          "Arriver ~1h avant : la file du lundi soir en août est chargée.",
+          "<b>Petit sac de nuit</b> préparé à part — on ne redescend pas à la voiture pendant la traversée.",
+          "Dîner avant l'embarquement à Trelleborg, ou pique-nique dans la voiture pendant l'attente — les restaurants du bord ferment tôt.",
+          "<b>Faire le plein de carburant en Suède</b> avant Trelleborg."
+        ]},
+        { type: "label", text: "✅ Avant de quitter la Suède" },
+        { type: "infobox", color: "green", title: "Les derniers achats", items: [
+          "<b>Systembolaget</b> si on veut ramener de l'alcool — fermé le dimanche, donc <b>lundi matin ou jamais</b>.",
+          "Les courses de bouche à ramener : <i>knäckebröd</i>, confiture de lingonberry, café, fromage <i>Västerbotten</i>, harengs. C'est en grande surface que c'est le moins cher.",
+          "Les bonbons en vrac (<i>lösgodis</i>) pour la route et pour l'école.",
+          "Vider et nettoyer la glacière avant le ferry."
+        ]}
+      ]
+    },
+
+    /* ================================================================
+       PAGE 5 — CARTE
        ================================================================ */
     {
       id: "carte",
