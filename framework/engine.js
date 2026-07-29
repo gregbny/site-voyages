@@ -653,7 +653,7 @@ function initMap(pageNum) {
             '</div></div>';
 
           var popup = new maplibregl.Popup({ maxWidth: '220px', offset: 10 }).setHTML(popupHtml);
-          var marker = new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
+          var marker = new maplibregl.Marker({ element: pillEl, anchor: 'center' })
             .setLngLat(toLngLat(m.p))
             .setPopup(popup)
             .addTo(map);
@@ -699,7 +699,7 @@ function initMap(pageNum) {
       var color = (m.cat && catColorsDay[m.cat]) ? catColorsDay[m.cat] : fallbackColor;
       var pillEl = createPillEl(m.label, color);
       var popup = new maplibregl.Popup({ maxWidth: '200px', offset: 10 }).setHTML('<b>' + m.label + '</b>');
-      new maplibregl.Marker({ element: pillEl, anchor: 'bottom-left' })
+      new maplibregl.Marker({ element: pillEl, anchor: 'center' })
         .setLngLat(toLngLat(m.p))
         .setPopup(popup)
         .addTo(dayMap);
